@@ -1427,7 +1427,7 @@ class RecipeDetailView(DetailView):
                 "total_VitamineB12" : total_vitamineB12 / quantite_total,   "total_sels_ajoutes" : total_sels_ajoutes / quantite_total , 
                  
                 "total_sucres_ajoutes" : total_sucres_ajoutes / quantite_total, "total_graisses_ajoutes" : Total_graisses_ajoutes / quantite_total, "total_fruitslegumineuse" : Total_fruitslegumineuse / quantite_total ,
-                "total_AG" : total_AGsatures + total_AG_insatures , "total_AG_insatures" : total_AG_insatures, "total_AG_trans" : total_AG_trans, "Quantite_totale" : quantite_total}
+                "total_AG" : total_AGsatures + total_AG_insatures , "total_AG_insatures" : total_AGmonoinsature + total_AGpolyinsature, "total_AG_trans" : total_AG_trans, "Quantite_totale" : quantite_total}
 
 
     def score_calorie_kj(self, total_calorique) : 
