@@ -218,7 +218,7 @@ for (let i = 0; i < imageForm.length; i++) {
             const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-ingredient'
             const id1 = $(formRegex1)
             const id2 = $(formRegex2)
-            id1.click(function () {
+            id1.change(function () {
                 console.log("Test Change ingredient");
                 const url = $("#recipeForm").attr("data-ingredients-url");  // get the url of the `load_cities` view
                 const formeId = $(this).val();  // get the selected country ID from the HTML input
