@@ -1415,7 +1415,7 @@ class RecipeDetailView(DetailView):
                 "total_VitamineK1" : total_VitamineK1 / quantite_total, "total_vitamineK2" : total_vitamineK2 / quantite_total, 
 
 
-                "total_vitamineK" : total_VitamineK / quantite_total, 
+                "total_vitamineK" : total_VitamineK1 + total_vitamineK2/ quantite_total, 
 
                     
                 "total_vitamineB1" : total_vitamineB1 / quantite_total, "total_vitamineB2" : total_vitamineB2 / quantite_total, 
