@@ -45,7 +45,7 @@ class Forme(models.Model):
 class Ingredient(models.Model):
     famille = models.ForeignKey(Famille, on_delete=models.CASCADE, related_name="famille_ingredient", null=True)
     forme = models.ForeignKey(Forme, on_delete=models.CASCADE, related_name="forme_ingredient", null=True, verbose_name='ingrédient')
-    name = models.CharField(max_length=500, verbose_name='forme', null=True)
+    name = models.CharField(max_length=500, verbose_name='forme')
     energie_kJ = models.FloatField(null= True)
     energie_kcal = models.FloatField(null= True)
     sodium = models.FloatField(null= True)

@@ -80,6 +80,7 @@ for index, row in df.iterrows():
       # Normal Fields ( Non-foreign key fields) adding
 
     #ingredient.name = row['alim_nom_fr']
+    ingredient.name = 'a'
     #print(row['alim_grp_nom_fr'])
     print(row['alim_ssgrp_nom_fr'])
     ingredient.famille = Famille.objects.filter(name = row['alim_grp_nom_fr'])[0]
