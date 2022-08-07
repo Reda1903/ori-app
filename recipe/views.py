@@ -1,6 +1,6 @@
 from audioop import reverse
 from multiprocessing import context
-from turtle import clone, title
+#from turtle import clone, title
 #from turtle import title
 from xml.dom.minidom import ReadOnlySequentialNamedNodeMap
 from django.http import HttpResponse
