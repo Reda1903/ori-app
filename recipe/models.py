@@ -7,7 +7,7 @@ from django.urls import reverse
 
 # Create your models here.
 class Recipe(models.Model):
-    title = models.CharField(max_length=500)
+    title = models.CharField(max_length=500, unique=True)
     #description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     #prep_time = models.DurationField()

@@ -52,6 +52,9 @@
         {{ form.ingredient}}
         {{ form.quantity}}
 <!--         {{ form.as_p }} -->
+
+        {{form.DELETE}}
+
         <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
     </div>
     {% endfor %}
@@ -94,16 +97,17 @@ function updateForms() {
 addImageFormBtn.addEventListener("click", function (event) {
     event.preventDefault();
     //let formCount = imageForm.length ;
-    const count = imageForm.length
-    const formCount = parseInt(counterID.getAttribute('value')) + 1 ;
+    const formCount = imageForm.length 
+    //const formCount = parseInt(counterID.getAttribute('value')) + 1 ;
     const newImageForm = imageForm[0].cloneNode(true);
     //const newImageForm = document.getElementById('empty-form').cloneNode(true);
     const formRegex = RegExp(`ingredients_recipe-(\\d){1}-`, 'g');
 
     newImageForm.innerHTML = newImageForm.innerHTML.replace(formRegex, `ingredients_recipe-${formCount}-`);
     mainForm.insertBefore(newImageForm, submitFormBtn);
-    totalForms.setAttribute('value', 10);
-    counterID.setAttribute('value', formCount);
+    totalForms.setAttribute('value', formCount + 1);
+
+    //counterID.setAttribute('value', formCount);
 
     get_ingredients()
 });
@@ -112,10 +116,20 @@ mainForm.addEventListener("click", function (event) {
     let formCount = imageForm.length ;
     if (event.target.classList.contains("delete-image-form")) {
         event.preventDefault();
-        event.target.parentElement.remove();
+        //event.target.parentElement.remove();
         //formCount--;
         //updateForms();
         //totalForms.setAttribute('value', 100);
+
+        event.target.parentElement.querySelectorAll('[id$="-DELETE"]')[0].checked = true;
+        console.log(event.target.parentElement.querySelectorAll('[id$="-DELETE"]')[0].checked)
+        //console.log(document.querySelectorAll('[id$="-DELETE"]'))
+        console.log('Test')
+        
+        //event.target.parentElement.remove();
+        event.target.parentElement.style.visibility = 'hidden';
+        event.target.parentElement.style.height=0;
+
     }
 });
 </script>
@@ -159,12 +173,16 @@ mainForm.addEventListener("click", function (event) {
     }
 </script>
 -->
-<script> 
-for (let i = 0; i < imageForm.length; i++) {
-    console.log( i + imageForm[1].id)
-}
-</script>
 
+<script>
+    var del = document.querySelectorAll('[id$="-DELETE"]')
+
+    for (let i=0; i < del.length; i++ ) {
+        console.log(del[i]);
+        del[i].style.visibility = 'hidden';
+    }
+        
+</script>
 
 <script>
  

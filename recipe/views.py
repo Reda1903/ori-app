@@ -1,8 +1,10 @@
+from audioop import reverse
 from multiprocessing import context
+from turtle import clone, title
 #from turtle import title
 from xml.dom.minidom import ReadOnlySequentialNamedNodeMap
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 import requests  
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
@@ -966,17 +968,29 @@ def update_recipe2(request, pk) :
 
         mainform = RecipeForm(instance=recipe_instance)
         formset = IngredientFormSet(instance=recipe_instance, )
-        print(formset)
+        #print(formset)
         return render(request, 'recipe/update_recipe.html', {"form" : mainform, "formset" : formset , "pk" : pk})
 
     elif request.method == "POST" :
+
+        #supprimer les ingrédients actuels
+        #models.IngredientRecipe.objects.filter(recipe=recipe_instance).delete() 
+        #models.Recipe.objects.get(id=pk)   
+
         print(request.POST.get('title'))
+
         form = RecipeForm(request.POST, request.FILES,recipe_instance)
+        #form = RecipeForm(request.POST)
         form.instance.author = request.user
+        #form.save()
+        
+
+
         #if form.is_valid():
         #    print(request.POST)
         recipe_instance.title = request.POST.get('title')
         recipe_instance.save(update_fields=['title'])
+
 
         formset = IngredientFormSet(request.POST, instance=recipe_instance)
         #formset = IngredientFormSet(request.POST)
@@ -984,7 +998,7 @@ def update_recipe2(request, pk) :
             
         #if formset.is_valid():
         formset.save()
-        print(formset)
+        #print(formset)
                 
         return redirect("update_recipe_process" , pk)
         
@@ -1036,9 +1050,62 @@ def update_process(request, pk) :
 
 
 def admin_recipe(request) :
-    recipes = models.Recipe.objects.all()
-    context = {"recipes" : recipes }
-    return render(request, 'recipe/recettes_admin.html', context)
+    if request.method == 'GET':
+        recipes = models.Recipe.objects.all()
+        context = {"recipes" : recipes }
+        return render(request, 'recipe/recettes_admin.html', context)
+
+    if request.method == 'POST':
+        if request.POST.get("submit_id"):
+            pk = request.POST['id']
+            recipe_instance = models.Recipe.objects.get(id = pk)
+
+            print(recipe_instance)
+            recipe_clone = recipe_instance
+
+            recipe_clone.id = None
+            recipe_clone.pk = None
+            recipe_clone.title = recipe_instance.title + '_BIS' 
+            recipe_clone.save()
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.IngredientRecipe.objects.filter(recipe = recipe_instance)
+            print(ingredients_instance)
+            for ingredient in ingredients_instance :
+                        ingredient_clone = ingredient
+                        ingredient_clone.id = None
+                        ingredient_clone.pk = None
+                        ingredient_clone.recipe = recipe_clone 
+                        ingredient_clone.save()    
+                        print(ingredient)        
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.ProcessRecipe.objects.filter(recipe = recipe_instance)
+            print(ingredients_instance)
+            for etape_prep in ingredients_instance :
+                        etape_clone = etape_prep
+                        etape_clone.id = None
+                        etape_clone.pk = None
+                        etape_clone.recipe = recipe_clone 
+                        etape_clone.save()    
+                        print(etape_clone)        
+
+
+            recipes = models.Recipe.objects.all()
+            context = {"recipes" : recipes }
+            return HttpResponseRedirect(reverse_lazy('recettes-recipe-utilisateur'))
+
+        if request.POST.get("search_button"):
+            name_recipe = request.POST['search']
+            print(request.POST)
+            print(name_recipe)
+            print(type(models.Recipe.objects.get(title='recette1').title))
+            recipes_list = models.Recipe.objects.all()
+            recipes = models.Recipe.objects.all().filter(title  = name_recipe)
+            context = {"recipes_list" : recipes_list, "recipes" : recipes }
+            return render(request, 'recipe/recettes_admin.html', context)
+            #return HttpResponseRedirect(reverse_lazy('recettes-recipe-utilisateur'))
+
 
 
 class RecipeListView(ListView):
@@ -2003,6 +2070,25 @@ def load_forme(request):
     return render(request, 'recipe/forme_dropdown_list_options.html', {'formes_famille': formes})
     # return JsonResponse(list(cities.values('id', 'name')), safe=False)
 
+
+def duplicate_recipe(request, pk) :  
+    if request.method ==  "POST":
+        recipe_instance = models.Recipe.objects.get(id=pk)
+        recipe_clone = recipe_instance
+
+        recipe_clone.id = None
+        recipe_clone.pk = None
+        recipe_clone.title = 'clone' 
+
+        recipes = models.Recipe.objects.all()
+        context = {"recipes" : recipes }
+        return render(request, 'recipe/recettes_admin.html', context)
+
+    
+    #elif request.method == "POST" :                
+    #    return redirect("recettes-recipe")
+    #else :
+    #    return redirect("recettes-recipe" )
 
 
     
