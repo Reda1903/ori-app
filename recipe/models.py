@@ -1,3 +1,4 @@
+from shutil import _ntuple_diskusage
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -10,6 +11,9 @@ class Recipe(models.Model):
     title = models.CharField(max_length=500, unique=True)
     #description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    updated = models.DateTimeField(auto_now=True, null=True)
+
     #prep_time = models.DurationField()
     #cook_time = models.DurationField()
     #servings = models.IntegerField()

@@ -71,8 +71,8 @@
                 </td>
                 <td><a class="btn" href="{% url 'pdf_recipe' pk=recipe.id %}"> Télécharger </a></td>
                 <td><a class="btn" href="{% url 'recettes-delete' recipe.id %}"> Supprimer </a></td>
-                <td> {{recipe.title}} </td>
-                <td> {{recipe.title}} </td>
+                <td> {{recipe.created}} </td>
+                <td> {{recipe.updated}} </td>
 
                 <!--
     <div class="card" style="width: 18rem;">

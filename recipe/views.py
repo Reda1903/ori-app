@@ -1,5 +1,6 @@
 from audioop import reverse
 from multiprocessing import context
+from time import timezone
 from unicodedata import name
 from urllib import request
 #from turtle import clone, title
@@ -12,6 +13,8 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from datetime import datetime
+
 
 from .process import html_to_pdf 
 
@@ -1030,7 +1033,8 @@ def update_recipe2(request, pk) :
         #if form.is_valid():
         #    print(request.POST)
         recipe_instance.title = request.POST.get('title')
-        recipe_instance.save(update_fields=['title'])
+        recipe_instance.updated = datetime.now()
+        recipe_instance.save(update_fields=['title', 'updated'])
 
 
         formset = IngredientFormSet(request.POST, instance=recipe_instance)
@@ -1040,6 +1044,7 @@ def update_recipe2(request, pk) :
         #if formset.is_valid():
         formset.save()
         #print(formset)
+       
                 
         return redirect("update_recipe_process" , pk)
         
@@ -1071,6 +1076,9 @@ def update_process(request, pk) :
         #    print(request.POST)
         #    print(" form is valid ")
         formset = ProcessFormSet(request.POST, instance=recipe_instance)
+
+        recipe_instance.updated = datetime.now()
+        recipe_instance.save(update_fields=['updated'])
         #formset = ProcessFormSet(request.POST)
             
         #if formset.is_valid():
