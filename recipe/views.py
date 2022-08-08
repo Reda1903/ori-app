@@ -11,6 +11,8 @@ import requests
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+
 from .process import html_to_pdf 
 
 from . import models
@@ -896,7 +898,7 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
     # rendering the template
     return HttpResponse(pdf, content_type='application/pdf')
 
-
+@login_required
 def home(request):
     context = {'title' : 'homme'}
     return render(request, "recipe/home.html", context)

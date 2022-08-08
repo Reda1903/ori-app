@@ -2,6 +2,11 @@ from django import forms
 from .models import Famille, Forme, Ingredient, IngredientRecipe, Recipe, ProcessRecipe
 
 class RecipeForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].label = 'Titre'
+
     class Meta :
         model = Recipe
         fields = '__all__' 
