@@ -197,7 +197,7 @@ mainForm.addEventListener("click", function (event) {
         console.log(formRegex1)
         const id1 = $(formRegex1)
         const id2 = $(formRegex2)
-        id1.change(function () {
+        id1.click(function () {
             const url = $("#recipeForm").attr("data-formes-url");  // get the url of the `load_cities` view
             const familleId = $(this).val();  // get the selected country ID from the HTML input
 
@@ -236,7 +236,7 @@ mainForm.addEventListener("click", function (event) {
             const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-ingredient'
             const id1 = $(formRegex1)
             const id2 = $(formRegex2)
-            id1.change(function () {
+            id1.click(function () {
                 console.log("Test Change ingredient");
                 const url = $("#recipeForm").attr("data-ingredients-url");  // get the url of the `load_cities` view
                 const formeId = $(this).val();  // get the selected country ID from the HTML input
