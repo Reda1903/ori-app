@@ -11,9 +11,9 @@
 
                 <div class = "col-sm">
                     
-                    <table class="table">
+                    <table class="table table-striped table-secondary">
                         <thead>
-                            <tr> Tableau nutritionnel</tr>
+                            <tr> <h2> Tableau nutritionnel </h2> </tr>
                 
                         </thead>
                         <tbody>             
@@ -306,9 +306,9 @@
                 <div class = "col-sm">
 
                     
-                    <table class="table">
+                    <table class="table table-striped table-secondary">
                         <thead>
-                            <tr> Allegations nutritionnelles </tr>
+                            <tr> <h2> Allegations nutritionnelles </h2> </tr>
 
                         </thead>
                         <tbody>   
@@ -333,10 +333,63 @@
                 <div class = "col-sm">
 
                     
-                    <table class="table">
+                    <table class="table table-striped table-secondary">
+                        <thead>
+                            <tr> <h2> Allegations minérales </h2> </tr>
+
+                        </thead>
+                        <tbody>   
+                        {% with i=0 %}
+                        {% for alleg in allegation_minerales %}    
+                            <tr>
+                                <th scope="col">
+                                    allegation {{forloop.counter}}
+                                </th>   
+
+                                <td> {{alleg}}</td>     
+                            </tr>
+
+                        {% endfor %}
+                        {% endwith %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class = "col-sm">
+
+                    
+                    <table class="table table-striped table-secondary">
+                        <thead>
+                            <tr> <h2> Allegations vitamines </h2> </tr>
+
+                        </thead>
+                        <tbody>   
+                        {% with i=0 %}
+                        {% for alleg in allegation_vitamine %}    
+                            <tr>
+                                <th scope="col">
+                                    allegation {{forloop.counter}}
+                                </th>   
+
+                                <td> {{alleg}}</td>     
+                            </tr>
+
+                        {% endfor %}
+                        {% endwith %}
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <div class = "col-sm">
+
+                    
+                    <table class="table table-striped table-secondary">
                         <thead>
 
-                            <tr> Recapitulatif ingredients </tr>
+                            <tr> <h2> Recapitulatif ingredients </h2> </tr>
                             <tr>
                                 <th scope="col"> Nom </th>
                                 <th scope="col"> Quantite </th>
@@ -367,10 +420,10 @@
                 <div class = "col-sm">
 
                     
-                    <table class="table">
+                    <table class="table table-striped table-secondary">
                         <thead>
 
-                            <tr> Recapitulatif processus </tr>
+                            <tr> <h2> Recapitulatif processus <h2/>  </tr>
 
                         </thead>
                         <tbody>  
@@ -389,66 +442,21 @@
                 </div>
 
                 <div class = "col-sm">
+                <table class="table table-striped table-secondary">                    
 
-                    <div> Nutriscore  </div>
+                    <div> <h2> Nutriscore  </h2> </div>
                     <div> {{nutriscore}} {{couleur}}</div>
-
+                </table>
 
                 </div>
-
-
+                
+                
 
             </div>
 
 
         </div>
 
-    <div class="card" style="width: 18rem;">
-  
-        <div class="card-body">
-            <h5 class="card-title"> {{object.title}} </h5>
-            <p class="card-text">{{object.description}}</p>
-            <p class="card-text">total calorique en kj/ 100g : {{total_calorie}}</p>
-            <p class="card-text">total calorique en kcal/100g : {{total_calorie_kcal}}</p>
-            <p class="card-text">total glucide en g/ 100g : {{total_glucide}}</p>
-            <p class="card-text">total sodium en g/100g : {{total_sodium}}</p>
 
-            <p class="card-text">Score calorie : {{Score_calorie}}</p>
-            <p class="card-text"> Nutriscore : {{nutriscore}}</p>
-            <p class="card-text"> Couleur : {{couleur}}</p>
-            <p class="card-text"> allegation : {{allegation}}</p>
-
-            <h6 class="card-subtitle mb-2 text-muted"> temps de cuisson : {{object.cook_time}} </h6>
-            {%for ingredient in ingredients%}
-
-            {%if ingredient.recipe == object %}
-            <br>
-            <br>
-                <p class="card-text">{{ingredient}}</p>
-                <p class="card-text">Quantite en (g) : {{ingredient.quantity}}</p>
-                <p class="card-text">energie en (kj par 100g) : {{ingredient.ingredient.energie_kJ}}</p>
-                <p class="card-text">energie en (kcal par 100g) : {{ingredient.ingredient.energie_kcal}}</p>
-                <p class="card-text">sodium en (g / 100g) : {{ingredient.ingredient.sodium}}</p>
-                <p class="card-text">glucides en (g / 100g) : {{ingredient.ingredient.glucides}}</p>
-            {% endif %}
-
-            {% endfor %}
-
-
-
-
-            {% for step in process %}
-                <p class="card-text">{{step.step}}</p>
-            
-            {% endfor %}
-        </div>
-        
-    </div>
-
-    <div class="col-4">
-        <a class="btn btn-outline-info" href="{% url 'recettes-update' object.id %}">Update</a>
-        <a class="btn btn-outline-danger" href="{% url 'recettes-delete' object.id %}">Delete</a>
-        <a class="btn btn-outline-info" href="{% url 'pdf_recipe' pk=object.id %}">download</a>
-    </div
 
     {% endblock content%}

@@ -79,6 +79,7 @@ for index, row in df.iterrows():
     ingredient = Ingredient()
       # Normal Fields ( Non-foreign key fields) adding
 
+    
     ingredient.name = row['alim_nom_fr'][:70]
     
     #print(row['alim_grp_nom_fr'])

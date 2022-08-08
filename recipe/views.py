@@ -1,5 +1,7 @@
 from audioop import reverse
 from multiprocessing import context
+from unicodedata import name
+from urllib import request
 #from turtle import clone, title
 #from turtle import title
 from xml.dom.minidom import ReadOnlySequentialNamedNodeMap
@@ -70,11 +72,13 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
         total_calorique_kcal = 0 
         total_glucide = 0
         total_sodium = 0
+        total_sel = 0
 
         total_proteins = 0 
         total_fibres = 0 
         total_eau= 0
         total_lipide = 0
+
         total_sucres = 0
         total_fructose = 0 
         total_galactose = 0 
@@ -127,10 +131,8 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
         total_vitamineD = 0
         total_vitamineE = 0 
-
         total_VitamineK1 = 0 
         total_vitamineK2 = 0
-
         total_vitamineB1 = 0
         total_vitamineB2 = 0 
         total_vitamineB3 = 0
@@ -160,7 +162,7 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
             if ingredient.ingredient.forme.name=='sels' :
                 total_sels_ajoutes = total_sels_ajoutes + ingredient.quantity 
 
-            if ingredient.ingredient.forme.name=='sucres,miels et assimilés' :
+            if ingredient.ingredient.forme.name=='sucres, miels et assimilés' :
                 total_sucres_ajoutes = total_sucres_ajoutes + ingredient.quantity 
 
             if ingredient.ingredient.famille.name =='matières grasses' :
@@ -171,207 +173,218 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
  
             if isinstance(ingredient.ingredient.energie_kJ, float):
-                total_calorique  = total_calorique + ingredient.quantity * (ingredient.ingredient.energie_kJ/100)
+                total_calorique  = total_calorique + ingredient.quantity * (ingredient.ingredient.energie_kJ)
 
             if isinstance(ingredient.ingredient.energie_kcal, float):
-                total_calorique_kcal  = total_calorique_kcal + ingredient.quantity * (ingredient.ingredient.energie_kcal/100)
+                total_calorique_kcal  = total_calorique_kcal + ingredient.quantity * (ingredient.ingredient.energie_kcal)
             
             if isinstance(ingredient.ingredient.glucide , float):
-                total_glucide  = total_glucide + ingredient.quantity * (ingredient.ingredient.glucide/100)
+                total_glucide  = total_glucide + ingredient.quantity * (ingredient.ingredient.glucide)
 
             if isinstance(ingredient.ingredient.sodium , float):
-                total_sodium  = total_sodium + ingredient.quantity * (ingredient.ingredient.sodium/100)
+                total_sodium  = total_sodium + ingredient.quantity * (ingredient.ingredient.selchlorure)
+
+            if isinstance(ingredient.ingredient.sodium , float):
+                total_sel  = total_sel + ingredient.quantity * (ingredient.ingredient.selchlorure)
 
 
             if isinstance(ingredient.ingredient.energie_kJ, float):
-                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.energie_kJ/100)
+                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.energie_kJ)
 
             if isinstance(ingredient.ingredient.fibres, float):
-                total_fibres  = total_fibres + ingredient.quantity * (ingredient.ingredient.fibres/100)
+                total_fibres  = total_fibres + ingredient.quantity * (ingredient.ingredient.fibres)
             
             if isinstance(ingredient.ingredient.eau , float):
-                total_eau  = total_eau + ingredient.quantity * (ingredient.ingredient.eau/100)
+                total_eau  = total_eau + ingredient.quantity * (ingredient.ingredient.eau)
 
             if isinstance(ingredient.ingredient.lipide , float):
-                total_lipide  = total_lipide + ingredient.quantity * (ingredient.ingredient.lipide/100)
+                total_lipide  = total_lipide + ingredient.quantity * (ingredient.ingredient.lipide)
 
 
 
             if isinstance(ingredient.ingredient.sucres, float):
-                total_sucres  = total_sucres + ingredient.quantity * (ingredient.ingredient.sucres/100)
+                total_sucres  = total_sucres + ingredient.quantity * (ingredient.ingredient.sucres)
 
             if isinstance(ingredient.ingredient.fructose, float):
-                total_fructose  = total_fructose + ingredient.quantity * (ingredient.ingredient.fructose/100)
+                total_fructose  = total_fructose + ingredient.quantity * (ingredient.ingredient.fructose)
             
             if isinstance(ingredient.ingredient.galactose , float):
-                total_galactose  = total_galactose + ingredient.quantity * (ingredient.ingredient.galactose/100)
+                total_galactose  = total_galactose + ingredient.quantity * (ingredient.ingredient.galactose)
 
             if isinstance(ingredient.ingredient.glucose , float):
-                total_glucose  = total_glucose + ingredient.quantity * (ingredient.ingredient.glucose/100)
+                total_glucose  = total_glucose + ingredient.quantity * (ingredient.ingredient.glucose)
 
             if isinstance(ingredient.ingredient.lactose, float):
-                total_lactose  = total_lactose + ingredient.quantity * (ingredient.ingredient.lactose/100)
+                total_lactose  = total_lactose + ingredient.quantity * (ingredient.ingredient.lactose)
 
             if isinstance(ingredient.ingredient.maltose, float):
-                total_maltose  = total_maltose + ingredient.quantity * (ingredient.ingredient.maltose/100)
+                total_maltose  = total_maltose + ingredient.quantity * (ingredient.ingredient.maltose)
 
             if isinstance(ingredient.ingredient.saccharose, float):
-                total_saccharose  = total_saccharose + ingredient.quantity * (ingredient.ingredient.saccharose/100)
+                total_saccharose  = total_saccharose + ingredient.quantity * (ingredient.ingredient.saccharose)
             
             if isinstance(ingredient.ingredient.amidon , float):
-                total_amidon  = total_amidon + ingredient.quantity * (ingredient.ingredient.amidon/100)
+                total_amidon  = total_amidon + ingredient.quantity * (ingredient.ingredient.amidon)
 
             if isinstance(ingredient.ingredient.fibresALimentraires , float):
-                total_fibresAlimentaires  = total_fibresAlimentaires + ingredient.quantity * (ingredient.ingredient.fibresALimentraires/100)
+                total_fibresAlimentaires  = total_fibresAlimentaires + ingredient.quantity * (ingredient.ingredient.fibresALimentraires)
 
             if isinstance(ingredient.ingredient.polyols, float):
-                total_polyols  = total_polyols + ingredient.quantity * (ingredient.ingredient.polyols/100)
+                total_polyols  = total_polyols + ingredient.quantity * (ingredient.ingredient.polyols)
 
 
             if isinstance(ingredient.ingredient.cendres , float):
-                total_cendres  = total_cendres + ingredient.quantity * (ingredient.ingredient.cendres/100)
+                total_cendres  = total_cendres + ingredient.quantity * (ingredient.ingredient.cendres)
 
             if isinstance(ingredient.ingredient.alcool , float):
-                total_alcool  = total_alcool + ingredient.quantity * (ingredient.ingredient.alcool/100)
+                total_alcool  = total_alcool + ingredient.quantity * (ingredient.ingredient.alcool)
 
             if isinstance(ingredient.ingredient.acidesOrganiques, float):
-                total_acidesOrganiques  = total_acidesOrganiques + ingredient.quantity * (ingredient.ingredient.acidesOrganiques/100)
+                total_acidesOrganiques  = total_acidesOrganiques + ingredient.quantity * (ingredient.ingredient.acidesOrganiques)
 
 
             if isinstance(ingredient.ingredient.AGsatures, float):
-                total_AGsatures  = total_AGsatures + ingredient.quantity * (ingredient.ingredient.AGsatures/100)
+                total_AGsatures  = total_AGsatures + ingredient.quantity * (ingredient.ingredient.AGsatures)
 
             if isinstance(ingredient.ingredient.AGmonoinsature, float):
-                total_AGmonoinsature  = total_AGmonoinsature + ingredient.quantity * (ingredient.ingredient.AGmonoinsature/100)
+                total_AGmonoinsature  = total_AGmonoinsature + ingredient.quantity * (ingredient.ingredient.AGmonoinsature)
 
             if isinstance(ingredient.ingredient.AGpolyinsature, float):
-                total_AGpolyinsature  = total_AGpolyinsature + ingredient.quantity * (ingredient.ingredient.AGpolyinsature/100)
+                total_AGpolyinsature  = total_AGpolyinsature + ingredient.quantity * (ingredient.ingredient.AGpolyinsature)
             
             if isinstance(ingredient.ingredient.AGbutyrique , float):
-                total_AGbutyrique  = total_AGbutyrique + ingredient.quantity * (ingredient.ingredient.AGbutyrique/100)
+                total_AGbutyrique  = total_AGbutyrique + ingredient.quantity * (ingredient.ingredient.AGbutyrique)
 
             if isinstance(ingredient.ingredient.AGcaproique , float):
-                total_AGcaproique  = total_AGcaproique + ingredient.quantity * (ingredient.ingredient.AGcaproique/100)
+                total_AGcaproique  = total_AGcaproique + ingredient.quantity * (ingredient.ingredient.AGcaproique)
 
             if isinstance(ingredient.ingredient.AGcaprylique, float):
-                total_AGcaprylique  = total_AGcaprylique + ingredient.quantity * (ingredient.ingredient.AGcaprylique/100)
+                total_AGcaprylique  = total_AGcaprylique + ingredient.quantity * (ingredient.ingredient.AGcaprylique)
 
             if isinstance(ingredient.ingredient.AGcaprique , float):
-                total_AGcaprique  = total_AGcaprique + ingredient.quantity * (ingredient.ingredient.AGcaprique/100)
+                total_AGcaprique  = total_AGcaprique + ingredient.quantity * (ingredient.ingredient.AGcaprique)
 
             if isinstance(ingredient.ingredient.AGlaurique , float):
-                total_AGlaurique  = total_AGlaurique + ingredient.quantity * (ingredient.ingredient.AGlaurique/100)
+                total_AGlaurique  = total_AGlaurique + ingredient.quantity * (ingredient.ingredient.AGlaurique)
 
             if isinstance(ingredient.ingredient.AGmyristique, float):
-                total_AGmyristique  = total_AGmyristique + ingredient.quantity * (ingredient.ingredient.AGmyristique/100)
+                total_AGmyristique  = total_AGmyristique + ingredient.quantity * (ingredient.ingredient.AGmyristique)
 
             if isinstance(ingredient.ingredient.AGpalmitique , float):
-                total_AGpalmitique  = total_AGpalmitique + ingredient.quantity * (ingredient.ingredient.AGpalmitique/100)
+                total_AGpalmitique  = total_AGpalmitique + ingredient.quantity * (ingredient.ingredient.AGpalmitique)
 
             if isinstance(ingredient.ingredient.AGbstearique, float):
-                total_AGbstearique  = total_AGbstearique + ingredient.quantity * (ingredient.ingredient.AGbstearique/100)
+                total_AGbstearique  = total_AGbstearique + ingredient.quantity * (ingredient.ingredient.AGbstearique)
 
             if isinstance(ingredient.ingredient.AGoleique , float):
-                total_AGoleique  = total_AGoleique + ingredient.quantity * (ingredient.ingredient.AGoleique/100)
+                total_AGoleique  = total_AGoleique + ingredient.quantity * (ingredient.ingredient.AGoleique)
 
             if isinstance(ingredient.ingredient.AGlinoleique , float):
-                total_AGlinoleique  = total_AGlinoleique + ingredient.quantity * (ingredient.ingredient.AGlinoleique/100)
+                total_AGlinoleique  = total_AGlinoleique + ingredient.quantity * (ingredient.ingredient.AGlinoleique)
 
             if isinstance(ingredient.ingredient.AGalphalinolenique , float):
-                total_AGalphalinolenique  = total_AGalphalinolenique + ingredient.quantity * (ingredient.ingredient.sodium/100)
+                total_AGalphalinolenique  = total_AGalphalinolenique + ingredient.quantity * (ingredient.ingredient.sodium)
 
             if isinstance(ingredient.ingredient.AGepa, float):
-                total_AGepa  = total_AGepa + ingredient.quantity * (ingredient.ingredient.AGepa/100)
+                total_AGepa  = total_AGepa + ingredient.quantity * (ingredient.ingredient.AGepa)
 
             if isinstance(ingredient.ingredient.AGdha, float):
-                total_AGdha  = total_AGdha + ingredient.quantity * (ingredient.ingredient.AGdha/100)
+                total_AGdha  = total_AGdha + ingredient.quantity * (ingredient.ingredient.AGdha)
 
             if isinstance(ingredient.ingredient.cholesterol, float):
-                total_cholesterol  = total_cholesterol + ingredient.quantity * (ingredient.ingredient.cholesterol/100)
+                total_cholesterol  = total_cholesterol + ingredient.quantity * (ingredient.ingredient.cholesterol)
 
             if isinstance(ingredient.ingredient.selchlorure , float):
-                total_selchlorure  = total_selchlorure + ingredient.quantity * (ingredient.ingredient.selchlorure/100)
+                total_selchlorure  = total_selchlorure + ingredient.quantity * (ingredient.ingredient.selchlorure)
 
             if isinstance(ingredient.ingredient.calcium, float):
-                total_calcium  = total_calcium + ingredient.quantity * (ingredient.ingredient.calcium/100)
+                total_calcium  = total_calcium + ingredient.quantity * (ingredient.ingredient.calcium)
 
             if isinstance(ingredient.ingredient.cuivre, float):
-                total_cuivre  = total_cuivre + ingredient.quantity * (ingredient.ingredient.cuivre/100)
+                total_cuivre  = total_cuivre + ingredient.quantity * (ingredient.ingredient.cuivre)
 
             if isinstance(ingredient.ingredient.fer , float):
-                total_fer  = total_fer + ingredient.quantity * (ingredient.ingredient.fer/100)
+                total_fer  = total_fer + ingredient.quantity * (ingredient.ingredient.fer)
 
             if isinstance(ingredient.ingredient.iode , float):
-                total_iode  = total_iode + ingredient.quantity * (ingredient.ingredient.iode/100)
+                total_iode  = total_iode + ingredient.quantity * (ingredient.ingredient.iode)
 
             if isinstance(ingredient.ingredient.magnesium, float):
-                total_magnesium  = total_magnesium + ingredient.quantity * (ingredient.ingredient.magnesium/100)
+                total_magnesium  = total_magnesium + ingredient.quantity * (ingredient.ingredient.magnesium)
 
 
 
             if isinstance(ingredient.ingredient.manganese, float):
-                total_manganese  = total_manganese + ingredient.quantity * (ingredient.ingredient.manganese/100)
+                total_manganese  = total_manganese + ingredient.quantity * (ingredient.ingredient.manganese)
 
             if isinstance(ingredient.ingredient.phosphore , float):
-                total_phosphore  = total_phosphore + ingredient.quantity * (ingredient.ingredient.phosphore/100)
+                total_phosphore  = total_phosphore + ingredient.quantity * (ingredient.ingredient.phosphore)
 
             if isinstance(ingredient.ingredient.potassium, float):
-                total_potassium  = total_potassium + ingredient.quantity * (ingredient.ingredient.potassium/100)
+                total_potassium  = total_potassium + ingredient.quantity * (ingredient.ingredient.potassium)
 
             if isinstance(ingredient.ingredient.selenium , float):
-                total_selenium  = total_selenium + ingredient.quantity * (ingredient.ingredient.selenium/100)
+                total_selenium  = total_selenium + ingredient.quantity * (ingredient.ingredient.selenium)
 
             if isinstance(ingredient.ingredient.zinc , float):
-                total_zinc  = total_zinc + ingredient.quantity * (ingredient.ingredient.zinc/100)
+                total_zinc  = total_zinc + ingredient.quantity * (ingredient.ingredient.zinc)
 
             if isinstance(ingredient.ingredient.retinol, float):
-                total_retinol  = total_retinol + ingredient.quantity * (ingredient.ingredient.retinol/100)
+                total_retinol  = total_retinol + ingredient.quantity * (ingredient.ingredient.retinol)
 
             if isinstance(ingredient.ingredient.betaCarotene , float):
-                total_betacarotene  = total_betacarotene + ingredient.quantity * (ingredient.ingredient.betaCarotene/100)
+                total_betacarotene  = total_betacarotene + ingredient.quantity * (ingredient.ingredient.betaCarotene)
 
             if isinstance(ingredient.ingredient.vitamineD , float):
-                total_vitamineD  = total_vitamineD + ingredient.quantity * (ingredient.ingredient.vitamineD/100)
+                total_vitamineD  = total_vitamineD + ingredient.quantity * (ingredient.ingredient.vitamineD)
 
             if isinstance(ingredient.ingredient.vitamineE, float):
-                total_vitamineE  = total_vitamineE + ingredient.quantity * (ingredient.ingredient.vitamineE/100)
+                total_vitamineE  = total_vitamineE + ingredient.quantity * (ingredient.ingredient.vitamineE)
             if isinstance(ingredient.ingredient.VitamineK1 , float):
-                total_VitamineK1  = total_VitamineK1 + ingredient.quantity * (ingredient.ingredient.VitamineK1/100)
+                total_VitamineK1  = total_VitamineK1 + ingredient.quantity * (ingredient.ingredient.VitamineK1)
 
             if isinstance(ingredient.ingredient.vitamineK2 , float):
-                total_vitamineK2  = total_vitamineK2 + ingredient.quantity * (ingredient.ingredient.vitamineK2/100)
+                total_vitamineK2  = total_vitamineK2 + ingredient.quantity * (ingredient.ingredient.vitamineK2)
 
             if isinstance(ingredient.ingredient.vitamineB1, float):
-                total_vitamineB1  = total_vitamineB1 + ingredient.quantity * (ingredient.ingredient.vitamineB1/100)
+                total_vitamineB1  = total_vitamineB1 + ingredient.quantity * (ingredient.ingredient.vitamineB1)
 
             
             if isinstance(ingredient.ingredient.vitamineB2, float):
-                total_vitamineB2  = total_vitamineB2 + ingredient.quantity * (ingredient.ingredient.vitamineB2/100)
+                total_vitamineB2  = total_vitamineB2 + ingredient.quantity * (ingredient.ingredient.vitamineB2)
 
 #####vitamineB2
 
             if isinstance(ingredient.ingredient.VitamineB3 , float):
-                total_vitamineB3  = total_vitamineB3 + ingredient.quantity * (ingredient.ingredient.VitamineB3/100)
+                total_vitamineB3  = total_vitamineB3 + ingredient.quantity * (ingredient.ingredient.VitamineB3)
 
             if isinstance(ingredient.ingredient.vitamineB5 , float):
-                total_VitamineB5  = total_VitamineB5 + ingredient.quantity * (ingredient.ingredient.vitamineB5/100)
+                total_VitamineB5  = total_VitamineB5 + ingredient.quantity * (ingredient.ingredient.vitamineB5)
 
             if isinstance(ingredient.ingredient.vitamineB9, float):
-                total_vitamineB6  = total_vitamineB6 + ingredient.quantity * (ingredient.ingredient.vitamineB6/100)
+                total_vitamineB6  = total_vitamineB6 + ingredient.quantity * (ingredient.ingredient.vitamineB6)
             if isinstance(ingredient.ingredient.glucide , float):
-                total_VitamineB9  = total_VitamineB9 + ingredient.quantity * (ingredient.ingredient.vitamineB9/100)
+                total_VitamineB9  = total_VitamineB9 + ingredient.quantity * (ingredient.ingredient.vitamineB9)
 #Changing V to V
             if isinstance(ingredient.ingredient.VitamineB12 , float):
-                total_vitamineB12  = total_vitamineB12 + ingredient.quantity * (ingredient.ingredient.VitamineB12/100)
+                total_vitamineB12  = total_vitamineB12 + ingredient.quantity * (ingredient.ingredient.VitamineB12)
 
                 
             if isinstance(ingredient.quantity, float):
                 quantite_total  = quantite_total + ingredient.quantity 
  
+            total_AG_trans = total_AGsatures +  total_AGbutyrique + total_AGcaproique + total_AGcaprylique + total_AGcaprique + total_AGlaurique
+            + total_AGmyristique + total_AGpalmitique + total_AGbstearique + total_AGoleique + total_AGlinoleique + total_AGalphalinolenique
+            + total_AGepa + total_AGdha
 
+            total_AG_insatures = total_AGmonoinsature + total_AGpolyinsature
+
+            total_AG = total_AG_trans + total_AG_insatures + total_AGsatures
+            total_VitamineK = total_VitamineK1 + total_vitamineK2
 
         return {"total_calorique" : total_calorique / quantite_total, "total_calorique_kcal" : total_calorique_kcal/quantite_total,
                 "total_glucide" : total_glucide / quantite_total, "total_sodium" : total_sodium / quantite_total, 
+                "total_sel" : total_sel/quantite_total, 
                 "total_proteins" : total_proteins / quantite_total, "total_fibres" : total_fibres / quantite_total, 
                 "total_eau" : total_eau / quantite_total, "total_sodium" : total_sodium / quantite_total, 
                 "total_lipide" : total_lipide / quantite_total, "total_sucres" : total_sucres / quantite_total, 
@@ -411,6 +424,9 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
                 "total_VitamineK1" : total_VitamineK1 / quantite_total, "total_vitamineK2" : total_vitamineK2 / quantite_total, 
 
+
+                "total_vitamineK" : total_VitamineK1 + total_vitamineK2/ quantite_total, 
+
                     
                 "total_vitamineB1" : total_vitamineB1 / quantite_total, "total_vitamineB2" : total_vitamineB2 / quantite_total, 
 
@@ -418,9 +434,11 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
                 "total_vitamineB6" : total_vitamineB6 / quantite_total, "total_VitamineB9" : total_VitamineB9 / quantite_total,  
 
-                "total_VitamineB12" : total_vitamineB12 / quantite_total,   "total_sels_ajoutes" : total_sels_ajoutes / quantite_total , "total_sucres_ajoutes" : total_sucres_ajoutes / quantite_total, "total_graisses_ajoutes" : Total_graisses_ajoutes / quantite_total, "total_fruitslegumineuse" : Total_fruitslegumineuse / quantite_total ,
+                "total_VitamineB12" : total_vitamineB12 / quantite_total,   "total_sels_ajoutes" : total_sels_ajoutes / quantite_total , 
+                 
+                "total_sucres_ajoutes" : 100*total_sucres_ajoutes / quantite_total, "total_graisses_ajoutes" : 100 * Total_graisses_ajoutes / quantite_total, "total_fruitslegumineuse" : 100 * Total_fruitslegumineuse / quantite_total ,
+                "total_AG" : total_AGsatures + total_AGmonoinsature + total_AGpolyinsature , "total_AG_insatures" : total_AGmonoinsature + total_AGpolyinsature, "total_AG_trans" : 0, "Quantite_totale" : quantite_total}
 
-                "Quantite_totale" : quantite_total}
 
 
     def score_calorie_kj(total_calorique) : 
@@ -503,16 +521,17 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
             return "Nutriscore E"
 
 
-
-    def allegation(total_cal, total_graisse, total_graisse_saturee, total_sucres,
-     total_sucres_ajoutes, total_sel, total_sel_ajoute, total_fibre, total_protein, total_graisses_monoinsatures, 
-     total_graisses_polyinsatures, total_selenium,  total_magnesium, total_phosphore, total_calcium, 
-     total_cuivre, total_fer, total_manganese, total_potassium, total_zinc, total_vitamineD, total_vitamineE,
-      total_vitamineK, total_vitamineB1,  total_vitamineB2, total_vitamineB3, total_vitamineB5, total_vitamineB6, 
-      total_vitamineB9, total_vitamineB12, total_AGepa, total_dha  ) : 
+    def allegation(self, total_cal, total_graisse, total_ag_saturee,
+     total_ag_trans, total_ag, total_sucres, total_sucres_ajoutes, total_sel, total_sodium, total_sel_ajoute, 
+     total_fibre, total_protein, total_graisses_monoinsatures, total_graisses_polyinsatures,
+     total_selenium,  total_magnesium, total_phosphore, total_calcium, total_cuivre, total_fer, 
+     total_manganese, total_potassium, total_zinc, total_vitamineD, total_vitamineE,
+     total_vitamineK, total_vitamineB1,  total_vitamineB2, total_vitamineB3, total_vitamineB5, 
+     total_vitamineB6, total_vitamineB9, total_vitamineB12, total_AGepa, total_dha, total_AGalphalinolenique  ) : 
         '''faire une allégation selon les valeurs des différents totaux'''
         allegations = []
         allegations_minerales = []
+        allegations_vitamine = []
 
         total_cal = 0.001
 
@@ -529,10 +548,10 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
             allegations.append ('sans matières grasses' )
         
         #à voir avec le client    
-        if total_graisse_saturee < 1.5 :
+        if total_ag_saturee + total_ag_trans < 1.5 :
             allegations.append ('faible teneur en graisses saturees')
 
-        elif total_graisse_saturee < 0.1 :
+        elif total_ag_saturee + total_ag_trans < 0.1 :
             allegations.append ('faible teneur en graisses saturees')    
         
         if total_sucres_ajoutes < 5 :
@@ -540,22 +559,25 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
         elif total_sucres_ajoutes < 0.5 :
             allegations.append ('sans sucres')
+        
+        if total_sucres_ajoutes < 2 :
+            allegations.append ('Sans sucre ajouté')
 
         #à voir avec le client 
         #if total_sucres_ajoutes < 0.5 :
         #    allegations.append ({'sans sucres ajoutes' : total_sucres})    
         
-        if total_sel + total_sel_ajoute < 0.12 :
+        if total_sel + total_sodium < 0.12 :
             allegations.append ('pauvre en sel')   
 
-        elif total_sel + total_sel_ajoute < 0.04 :
+        elif total_sel + total_sodium < 0.04 :
             allegations.append ('tres pauvre en sel')    
         
-        elif total_sel + total_sel_ajoute< 0.005 :
+        elif total_sel + total_sodium < 0.005 :
             allegations.append ('sans sodium')   
 
-        #if total_sel + total_sel_ajoute< 0.005 :
-        #    allegations.append ({'sans sodium ajouté' : total_sel})  
+        if total_sel_ajoute < 0.005 :
+            allegations.append ('sans sodium ou sel ajouté')  
 
         #a voir avec le client
         if total_fibre > 3 :
@@ -565,127 +587,143 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
             allegations.append ('riche en fibres')
 
         #a voir avec le client
-        if total_protein * 4 / total_cal > 12 :
-            allegations.append ('source de proteins')
+        if total_cal > 0 : 
+            if total_protein * 4 / total_cal > 0.12 :
+                allegations.append ('source de proteins')
 
-        elif total_protein * 4 / total_cal > 20 :
-            allegations.append ('riche en proteins')
+            elif total_protein * 4 / total_cal > 0.20 :
+                allegations.append ('riche en proteins')
 
 
         ### 22, 23, 24 
-        total_acide_alphalinolenique, total_acide_eicosapentaenoique, total_acide_docosahexenoique = 0, 0, 0
-        if total_acide_alphalinolenique > 0.3 or (total_acide_eicosapentaenoique + total_acide_docosahexenoique > 0.04) : 
+        if total_AGalphalinolenique > 0.3 or (total_AGepa + total_dha > 40) : 
             allegations.append ('source d acide gras omega3')
 
-        elif total_acide_alphalinolenique > 0.3 or (total_acide_eicosapentaenoique + total_acide_docosahexenoique > 40) : 
+        elif total_AGalphalinolenique > 0.6 or (total_AGepa + total_dha > 80) : 
             allegations.append ('riche en acide gras omega3')
 
-        energie_graisses_monoinsatures, perc_graisses_monoinsatures = 0, 0
-        if (perc_graisses_monoinsatures > 0.45 and energie_graisses_monoinsatures > 0.2 * total_cal) : 
-            allegations.append ('riche en graisse monoinsaturees')
+        total_acide_gras = total_graisses_monoinsatures + total_graisses_polyinsatures + total_ag_saturee
 
-        perc_graisses_polyinsatures, energie_graisses_polyinsatures = 0, 0
-        if (perc_graisses_polyinsatures > 0.45 and energie_graisses_polyinsatures > 0.2 * total_cal) : 
-            allegations.append ('riche en graisse polyinsaturees')
+        if total_acide_gras > 0 :
+            if total_graisse == 0:
+                total_graisse = 1
 
+            if (total_graisses_monoinsatures / total_graisse > 0.45 and total_graisses_monoinsatures * 9 > 0.2 * total_cal) : 
+                allegations.append ('riche en graisse monoinsaturees')
 
+            if (total_graisses_polyinsatures / total_graisse  > 0.45 and total_graisses_polyinsatures * 9> 0.2 * total_cal) : 
+                allegations.append ('riche en graisse polyinsaturees')
+
+            if ( total_graisses_polyinsatures + total_graisses_monoinsatures / total_graisse > 0.7  and total_graisses_polyinsatures + total_graisses_monoinsatures * 9 > 0.2 * total_cal) : 
+                allegations.append ('riche en graisse insaturees')
+#########################################################################################33
+#
+#       Minéraux
+#
+######################################################################################
         if total_selenium > 8.25 : 
-            allegations.append('source de selenium')
+            allegations_minerales.append('source de selenium')
         elif total_selenium > 16.5 : 
-            allegations.append('riche en selenium')
+            allegations_minerales.append('riche en selenium')
 
         if total_magnesium > 0.056 : 
-            allegations.append('source de magnesium')
+            allegations_minerales.append('source de magnesium')
         elif total_magnesium > 0.112 : 
-            allegations.append('riche en magnesium')
+            allegations_minerales.append('riche en magnesium')
 
         if total_phosphore > 0.105 : 
-            allegations.append('source de phosphore')
+            allegations_minerales.append('source de phosphore')
         elif total_phosphore > 0.210 : 
-            allegations.append('riche en phosphore')
+            allegations_minerales.append('riche en phosphore')
 
         if total_calcium > 120 : 
-            allegations.append('source de calcium')
+            allegations_minerales.append('source de calcium')
         elif total_calcium > 240 : 
-            allegations.append('riche en selenium')
+            allegations_minerales.append('riche en selenium')
 
         if total_cuivre > 0.15 : 
-            allegations.append('source de cuivre')
+            allegations_minerales.append('source de cuivre')
         elif total_cuivre > 0.30 : 
-            allegations.append('riche en cuivre')
+            allegations_minerales.append('riche en cuivre')
 
         if total_fer > 2.1 : 
-            allegations.append('source de fer')
+            allegations_minerales.append('source de fer')
         elif total_fer > 4.2 : 
-            allegations.append('riche en fer')
+            allegations_minerales.append('riche en fer')
 
         if total_manganese > 0.3 : 
-            allegations.append('source de manganese')
+            allegations_minerales.append('source de manganese')
         elif total_manganese > 0.6 : 
-            allegations.append('riche en manganese')
+            allegations_minerales.append('riche en manganese')
 
         if total_potassium > 300 : 
-            allegations.append('source de potassium')
+            allegations_minerales.append('source de potassium')
         elif total_potassium > 600 : 
-            allegations.append('riche en potassium')    
+            allegations_minerales.append('riche en potassium')    
 
         if total_zinc > 1.5 : 
-            allegations.append('source de zinc')
+            allegations_minerales.append('source de zinc')
         elif total_zinc > 3 : 
-            allegations.append(['riche en zinc'])
+            allegations_minerales.append(['riche en zinc'])
+
+#############################################################
+#
+#
+#####################################################################
 
         if total_vitamineD > 0.75 : 
-            allegations.append(['source de vitamine D'])
+            allegations_vitamine.append(['source de vitamine D'])
         elif total_vitamineD > 1.5 : 
-            allegations.append(['riche en vitamine D'])
+            allegations_vitamine.append(['riche en vitamine D'])
 
         if total_vitamineE > 1.8 : 
-            allegations.append(['source de vitamine E'])
+            allegations_vitamine.append(['source de vitamine E'])
         elif total_vitamineE > 1.8 : 
-            allegations.append(['riche en vitamine E'])
+            allegations_vitamine.append(['riche en vitamine E'])
             
         if total_vitamineK > 1.8 : 
-            allegations.append(['source de vitamine K'])
+            allegations_vitamine.append(['source de vitamine K'])
         elif total_vitamineK > 1.8 : 
-            allegations.append(['riche en vitamine K'])            
+            allegations_vitamine.append(['riche en vitamine K'])            
             
         if total_vitamineB1 > 0.165 : 
-            allegations.append(['source de vitamine B1'])
+            allegations_vitamine.append(['source de vitamine B1'])
         elif total_vitamineB1 > 0.33 : 
-            allegations.append(['riche en vitamine B1'])     
+            allegations_vitamine.append(['riche en vitamine B1'])     
 
         if total_vitamineB2 > 0.21 : 
-            allegations.append(['source de vitamine B2'])
+            allegations_vitamine.append(['source de vitamine B2'])
         elif total_vitamineB2 > 0.42 : 
-            allegations.append(['riche en vitamine B2'])     
+            allegations_vitamine.append(['riche en vitamine B2'])     
 
 
         if total_vitamineB3 > 2.4 : 
-            allegations.append(['source de vitamine B2'])
+            allegations_vitamine.append(['source de vitamine B2'])
         elif total_vitamineB3 > 4.2 : 
-            allegations.append(['riche en vitamine B2'])     
+            allegations_vitamine.append(['riche en vitamine B2'])     
 
         if total_vitamineB5 > 0.9 : 
-            allegations.append(['source de vitamine B5'])
+            allegations_vitamine.append(['source de vitamine B5'])
         elif total_vitamineB5 > 1.8 : 
-            allegations.append(['riche en vitamine B5'])     
+            allegations_vitamine.append(['riche en vitamine B5'])     
 
         if total_vitamineB6 > 0.21 : 
-            allegations.append(['source de vitamine B6'])
+            allegations_vitamine.append(['source de vitamine B6'])
         elif total_vitamineB6 > 0.42 : 
-            allegations.append(['riche en vitamine B6'])
+            allegations_vitamine.append(['riche en vitamine B6'])
 
         if total_vitamineB9 > 30 : 
-            allegations.append(['source de vitamine B9'])
+            allegations_vitamine.append(['source de vitamine B9'])
         elif total_vitamineB9 > 60 : 
-            allegations.append(['riche en vitamine B9'])
+            allegations_vitamine.append(['riche en vitamine B9'])
 
         if total_vitamineB12 > 0.375 : 
-            allegations.append(['source de vitamine B12'])
+            allegations_vitamine.append(['source de vitamine B12'])
         elif total_vitamineB12 > 0.75: 
-            allegations.append(['riche en vitamine B12'])
+            allegations_vitamine.append(['riche en vitamine B12'])
 
-        return allegations
+        return allegations, allegations_minerales, allegations_vitamine
+
 
 
 #############################################################################################################################
@@ -844,11 +882,12 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
     context['nutriscore'] = nutriscoreLettre(nutriscore)
     context['couleur'] = nutriscore_couleur[context['nutriscore']]
-    context['allegation'] = allegation(totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_sucres"],
-                            totaux["total_sucres_ajoutes"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
-                            totaux["total_selenium"], totaux["total_magnesium"], totaux["total_phosphore"], totaux["total_calcium"], totaux["total_cuivre"], totaux["total_fer"], totaux["total_manganese"], totaux["total_potassium"], totaux["total_zinc"], 
-                            totaux["total_vitamineD"], totaux["total_vitamineE"], totaux["total_VitamineK1"], totaux["total_VitamineB5"],  totaux["total_vitamineB2"], totaux["total_vitamineB3"], totaux["total_vitamineB2"], totaux["total_vitamineB6"], totaux["total_VitamineB9"],
-                            totaux["total_VitamineB12"], totaux["total_AGepa"], totaux["total_AGdha"] )
+    context['allegation'],context['allegation_minerales'],context['allegation_vitamine']= allegation(ingredients, totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
+                                totaux["total_sucres_ajoutes"], totaux["total_sel"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
+                                totaux["total_selenium"], totaux["total_magnesium"], totaux["total_phosphore"], totaux["total_calcium"], totaux["total_cuivre"], totaux["total_fer"], totaux["total_manganese"], totaux["total_potassium"], totaux["total_zinc"], 
+                                totaux["total_vitamineD"], totaux["total_vitamineE"], totaux["total_vitamineK"], totaux["total_vitamineB1"],  totaux["total_vitamineB2"], totaux["total_vitamineB3"], totaux["total_VitamineB5"], totaux["total_vitamineB6"], totaux["total_VitamineB9"],
+                                totaux["total_VitamineB12"], totaux["total_AGepa"], totaux["total_AGdha"], totaux["total_AGalphalinolenique"] )
+
 
     #context.pop('self', None)
     #context['self'] = recipe_cont
@@ -1052,7 +1091,7 @@ def update_process(request, pk) :
 def admin_recipe(request) :
     if request.method == 'GET':
         recipes = models.Recipe.objects.all()
-        context = {"recipes" : recipes }
+        context = {"recipes" : recipes, "recipes_list" : recipes }
         return render(request, 'recipe/recettes_admin.html', context)
 
     if request.method == 'POST':
@@ -1092,8 +1131,9 @@ def admin_recipe(request) :
 
 
             recipes = models.Recipe.objects.all()
-            context = {"recipes" : recipes }
-            return HttpResponseRedirect(reverse_lazy('recettes-recipe-utilisateur'))
+            context = {"recipes" : recipes, "recipes_list" : recipes}
+            return render(request, 'recipe/recettes_admin.html', context)
+            #return HttpResponseRedirect(reverse_lazy('recettes-recipe-utilisateur'))
 
         if request.POST.get("search_button"):
             name_recipe = request.POST['search']
@@ -1108,13 +1148,61 @@ def admin_recipe(request) :
 
 
 
-class RecipeListView(ListView):
-    model = models.Recipe 
-    template_name = 'recipe/recettes.html'
-    context_object_name = 'recipes'
+def recipes_view(request):
+    if request.method == 'GET':
+        recipes = models.Recipe.objects.all()
+        context = {"recipes" : recipes, "recipes_list" : recipes, }
+        return render(request, 'recipe/recettes_admin.html', context)
+
+    if request.method == 'POST':
+        if request.POST.get("submit_id"):
+            pk = request.POST['id']
+            recipe_instance = models.Recipe.objects.get(id = pk)
+
+            print(recipe_instance)
+            recipe_clone = recipe_instance
+
+            recipe_clone.id = None
+            recipe_clone.pk = None
+            recipe_clone.title = recipe_instance.title + '_BIS' 
+            recipe_clone.save()
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.IngredientRecipe.objects.filter(recipe = recipe_instance)
+            print(ingredients_instance)
+            for ingredient in ingredients_instance :
+                        ingredient_clone = ingredient
+                        ingredient_clone.id = None
+                        ingredient_clone.pk = None
+                        ingredient_clone.recipe = recipe_clone 
+                        ingredient_clone.save()    
+                        print(ingredient)        
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.ProcessRecipe.objects.filter(recipe = recipe_instance)
+            print(ingredients_instance)
+            for etape_prep in ingredients_instance :
+                        etape_clone = etape_prep
+                        etape_clone.id = None
+                        etape_clone.pk = None
+                        etape_clone.recipe = recipe_clone 
+                        etape_clone.save()    
+                        print(etape_clone)        
 
 
+            recipes = models.Recipe.objects.all()
+            context = {"recipes" : recipes, "recipes_list" : recipes }
+            return render(request, 'recipe/recettes_admin.html', context)
 
+        if request.POST.get("search_button"):
+            name_recipe = request.POST['search']
+            print(request.POST)
+            print(name_recipe)
+
+            recipes_list = models.Recipe.objects.all()
+            recipes = models.Recipe.objects.all().filter(title  = name_recipe)
+            context = {"recipes_list" : recipes, "recipes" : recipes }
+            return render(request, 'recipe/recettes_admin.html', context)
 
 
 class RecipeDetailView(DetailView):
@@ -1134,6 +1222,7 @@ class RecipeDetailView(DetailView):
         total_calorique_kcal = 0 
         total_glucide = 0
         total_sodium = 0
+        total_sel = 0
 
         total_proteins = 0 
         total_fibres = 0 
@@ -1223,7 +1312,7 @@ class RecipeDetailView(DetailView):
             if ingredient.ingredient.forme.name=='sels' :
                 total_sels_ajoutes = total_sels_ajoutes + ingredient.quantity 
 
-            if ingredient.ingredient.forme.name=='sucres,miels et assimilés' :
+            if ingredient.ingredient.forme.name=='sucres, miels et assimilés' :
                 total_sucres_ajoutes = total_sucres_ajoutes + ingredient.quantity 
 
             if ingredient.ingredient.famille.name =='matières grasses' :
@@ -1234,198 +1323,201 @@ class RecipeDetailView(DetailView):
 
  
             if isinstance(ingredient.ingredient.energie_kJ, float):
-                total_calorique  = total_calorique + ingredient.quantity * (ingredient.ingredient.energie_kJ/100)
+                total_calorique  = total_calorique + ingredient.quantity * (ingredient.ingredient.energie_kJ)
 
             if isinstance(ingredient.ingredient.energie_kcal, float):
-                total_calorique_kcal  = total_calorique_kcal + ingredient.quantity * (ingredient.ingredient.energie_kcal/100)
+                total_calorique_kcal  = total_calorique_kcal + ingredient.quantity * (ingredient.ingredient.energie_kcal)
             
             if isinstance(ingredient.ingredient.glucide , float):
-                total_glucide  = total_glucide + ingredient.quantity * (ingredient.ingredient.glucide/100)
+                total_glucide  = total_glucide + ingredient.quantity * (ingredient.ingredient.glucide)
 
             if isinstance(ingredient.ingredient.sodium , float):
-                total_sodium  = total_sodium + ingredient.quantity * (ingredient.ingredient.sodium/100)
+                total_sodium  = total_sodium + ingredient.quantity * (ingredient.ingredient.selchlorure)
+
+            if isinstance(ingredient.ingredient.sodium , float):
+                total_sel  = total_sel + ingredient.quantity * (ingredient.ingredient.selchlorure)
 
 
             if isinstance(ingredient.ingredient.energie_kJ, float):
-                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.energie_kJ/100)
+                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.energie_kJ)
 
             if isinstance(ingredient.ingredient.fibres, float):
-                total_fibres  = total_fibres + ingredient.quantity * (ingredient.ingredient.fibres/100)
+                total_fibres  = total_fibres + ingredient.quantity * (ingredient.ingredient.fibres)
             
             if isinstance(ingredient.ingredient.eau , float):
-                total_eau  = total_eau + ingredient.quantity * (ingredient.ingredient.eau/100)
+                total_eau  = total_eau + ingredient.quantity * (ingredient.ingredient.eau)
 
             if isinstance(ingredient.ingredient.lipide , float):
-                total_lipide  = total_lipide + ingredient.quantity * (ingredient.ingredient.lipide/100)
+                total_lipide  = total_lipide + ingredient.quantity * (ingredient.ingredient.lipide)
 
 
 
             if isinstance(ingredient.ingredient.sucres, float):
-                total_sucres  = total_sucres + ingredient.quantity * (ingredient.ingredient.sucres/100)
+                total_sucres  = total_sucres + ingredient.quantity * (ingredient.ingredient.sucres)
 
             if isinstance(ingredient.ingredient.fructose, float):
-                total_fructose  = total_fructose + ingredient.quantity * (ingredient.ingredient.fructose/100)
+                total_fructose  = total_fructose + ingredient.quantity * (ingredient.ingredient.fructose)
             
             if isinstance(ingredient.ingredient.galactose , float):
-                total_galactose  = total_galactose + ingredient.quantity * (ingredient.ingredient.galactose/100)
+                total_galactose  = total_galactose + ingredient.quantity * (ingredient.ingredient.galactose)
 
             if isinstance(ingredient.ingredient.glucose , float):
-                total_glucose  = total_glucose + ingredient.quantity * (ingredient.ingredient.glucose/100)
+                total_glucose  = total_glucose + ingredient.quantity * (ingredient.ingredient.glucose)
 
             if isinstance(ingredient.ingredient.lactose, float):
-                total_lactose  = total_lactose + ingredient.quantity * (ingredient.ingredient.lactose/100)
+                total_lactose  = total_lactose + ingredient.quantity * (ingredient.ingredient.lactose)
 
             if isinstance(ingredient.ingredient.maltose, float):
-                total_maltose  = total_maltose + ingredient.quantity * (ingredient.ingredient.maltose/100)
+                total_maltose  = total_maltose + ingredient.quantity * (ingredient.ingredient.maltose)
 
             if isinstance(ingredient.ingredient.saccharose, float):
-                total_saccharose  = total_saccharose + ingredient.quantity * (ingredient.ingredient.saccharose/100)
+                total_saccharose  = total_saccharose + ingredient.quantity * (ingredient.ingredient.saccharose)
             
             if isinstance(ingredient.ingredient.amidon , float):
-                total_amidon  = total_amidon + ingredient.quantity * (ingredient.ingredient.amidon/100)
+                total_amidon  = total_amidon + ingredient.quantity * (ingredient.ingredient.amidon)
 
             if isinstance(ingredient.ingredient.fibresALimentraires , float):
-                total_fibresAlimentaires  = total_fibresAlimentaires + ingredient.quantity * (ingredient.ingredient.fibresALimentraires/100)
+                total_fibresAlimentaires  = total_fibresAlimentaires + ingredient.quantity * (ingredient.ingredient.fibresALimentraires)
 
             if isinstance(ingredient.ingredient.polyols, float):
-                total_polyols  = total_polyols + ingredient.quantity * (ingredient.ingredient.polyols/100)
+                total_polyols  = total_polyols + ingredient.quantity * (ingredient.ingredient.polyols)
 
 
             if isinstance(ingredient.ingredient.cendres , float):
-                total_cendres  = total_cendres + ingredient.quantity * (ingredient.ingredient.cendres/100)
+                total_cendres  = total_cendres + ingredient.quantity * (ingredient.ingredient.cendres)
 
             if isinstance(ingredient.ingredient.alcool , float):
-                total_alcool  = total_alcool + ingredient.quantity * (ingredient.ingredient.alcool/100)
+                total_alcool  = total_alcool + ingredient.quantity * (ingredient.ingredient.alcool)
 
             if isinstance(ingredient.ingredient.acidesOrganiques, float):
-                total_acidesOrganiques  = total_acidesOrganiques + ingredient.quantity * (ingredient.ingredient.acidesOrganiques/100)
+                total_acidesOrganiques  = total_acidesOrganiques + ingredient.quantity * (ingredient.ingredient.acidesOrganiques)
 
 
             if isinstance(ingredient.ingredient.AGsatures, float):
-                total_AGsatures  = total_AGsatures + ingredient.quantity * (ingredient.ingredient.AGsatures/100)
+                total_AGsatures  = total_AGsatures + ingredient.quantity * (ingredient.ingredient.AGsatures)
 
             if isinstance(ingredient.ingredient.AGmonoinsature, float):
-                total_AGmonoinsature  = total_AGmonoinsature + ingredient.quantity * (ingredient.ingredient.AGmonoinsature/100)
+                total_AGmonoinsature  = total_AGmonoinsature + ingredient.quantity * (ingredient.ingredient.AGmonoinsature)
 
             if isinstance(ingredient.ingredient.AGpolyinsature, float):
-                total_AGpolyinsature  = total_AGpolyinsature + ingredient.quantity * (ingredient.ingredient.AGpolyinsature/100)
+                total_AGpolyinsature  = total_AGpolyinsature + ingredient.quantity * (ingredient.ingredient.AGpolyinsature)
             
             if isinstance(ingredient.ingredient.AGbutyrique , float):
-                total_AGbutyrique  = total_AGbutyrique + ingredient.quantity * (ingredient.ingredient.AGbutyrique/100)
+                total_AGbutyrique  = total_AGbutyrique + ingredient.quantity * (ingredient.ingredient.AGbutyrique)
 
             if isinstance(ingredient.ingredient.AGcaproique , float):
-                total_AGcaproique  = total_AGcaproique + ingredient.quantity * (ingredient.ingredient.AGcaproique/100)
+                total_AGcaproique  = total_AGcaproique + ingredient.quantity * (ingredient.ingredient.AGcaproique)
 
             if isinstance(ingredient.ingredient.AGcaprylique, float):
-                total_AGcaprylique  = total_AGcaprylique + ingredient.quantity * (ingredient.ingredient.AGcaprylique/100)
+                total_AGcaprylique  = total_AGcaprylique + ingredient.quantity * (ingredient.ingredient.AGcaprylique)
 
             if isinstance(ingredient.ingredient.AGcaprique , float):
-                total_AGcaprique  = total_AGcaprique + ingredient.quantity * (ingredient.ingredient.AGcaprique/100)
+                total_AGcaprique  = total_AGcaprique + ingredient.quantity * (ingredient.ingredient.AGcaprique)
 
             if isinstance(ingredient.ingredient.AGlaurique , float):
-                total_AGlaurique  = total_AGlaurique + ingredient.quantity * (ingredient.ingredient.AGlaurique/100)
+                total_AGlaurique  = total_AGlaurique + ingredient.quantity * (ingredient.ingredient.AGlaurique)
 
             if isinstance(ingredient.ingredient.AGmyristique, float):
-                total_AGmyristique  = total_AGmyristique + ingredient.quantity * (ingredient.ingredient.AGmyristique/100)
+                total_AGmyristique  = total_AGmyristique + ingredient.quantity * (ingredient.ingredient.AGmyristique)
 
             if isinstance(ingredient.ingredient.AGpalmitique , float):
-                total_AGpalmitique  = total_AGpalmitique + ingredient.quantity * (ingredient.ingredient.AGpalmitique/100)
+                total_AGpalmitique  = total_AGpalmitique + ingredient.quantity * (ingredient.ingredient.AGpalmitique)
 
             if isinstance(ingredient.ingredient.AGbstearique, float):
-                total_AGbstearique  = total_AGbstearique + ingredient.quantity * (ingredient.ingredient.AGbstearique/100)
+                total_AGbstearique  = total_AGbstearique + ingredient.quantity * (ingredient.ingredient.AGbstearique)
 
             if isinstance(ingredient.ingredient.AGoleique , float):
-                total_AGoleique  = total_AGoleique + ingredient.quantity * (ingredient.ingredient.AGoleique/100)
+                total_AGoleique  = total_AGoleique + ingredient.quantity * (ingredient.ingredient.AGoleique)
 
             if isinstance(ingredient.ingredient.AGlinoleique , float):
-                total_AGlinoleique  = total_AGlinoleique + ingredient.quantity * (ingredient.ingredient.AGlinoleique/100)
+                total_AGlinoleique  = total_AGlinoleique + ingredient.quantity * (ingredient.ingredient.AGlinoleique)
 
             if isinstance(ingredient.ingredient.AGalphalinolenique , float):
-                total_AGalphalinolenique  = total_AGalphalinolenique + ingredient.quantity * (ingredient.ingredient.sodium/100)
+                total_AGalphalinolenique  = total_AGalphalinolenique + ingredient.quantity * (ingredient.ingredient.sodium)
 
             if isinstance(ingredient.ingredient.AGepa, float):
-                total_AGepa  = total_AGepa + ingredient.quantity * (ingredient.ingredient.AGepa/100)
+                total_AGepa  = total_AGepa + ingredient.quantity * (ingredient.ingredient.AGepa)
 
             if isinstance(ingredient.ingredient.AGdha, float):
-                total_AGdha  = total_AGdha + ingredient.quantity * (ingredient.ingredient.AGdha/100)
+                total_AGdha  = total_AGdha + ingredient.quantity * (ingredient.ingredient.AGdha)
 
             if isinstance(ingredient.ingredient.cholesterol, float):
-                total_cholesterol  = total_cholesterol + ingredient.quantity * (ingredient.ingredient.cholesterol/100)
+                total_cholesterol  = total_cholesterol + ingredient.quantity * (ingredient.ingredient.cholesterol)
 
             if isinstance(ingredient.ingredient.selchlorure , float):
-                total_selchlorure  = total_selchlorure + ingredient.quantity * (ingredient.ingredient.selchlorure/100)
+                total_selchlorure  = total_selchlorure + ingredient.quantity * (ingredient.ingredient.selchlorure)
 
             if isinstance(ingredient.ingredient.calcium, float):
-                total_calcium  = total_calcium + ingredient.quantity * (ingredient.ingredient.calcium/100)
+                total_calcium  = total_calcium + ingredient.quantity * (ingredient.ingredient.calcium)
 
             if isinstance(ingredient.ingredient.cuivre, float):
-                total_cuivre  = total_cuivre + ingredient.quantity * (ingredient.ingredient.cuivre/100)
+                total_cuivre  = total_cuivre + ingredient.quantity * (ingredient.ingredient.cuivre)
 
             if isinstance(ingredient.ingredient.fer , float):
-                total_fer  = total_fer + ingredient.quantity * (ingredient.ingredient.fer/100)
+                total_fer  = total_fer + ingredient.quantity * (ingredient.ingredient.fer)
 
             if isinstance(ingredient.ingredient.iode , float):
-                total_iode  = total_iode + ingredient.quantity * (ingredient.ingredient.iode/100)
+                total_iode  = total_iode + ingredient.quantity * (ingredient.ingredient.iode)
 
             if isinstance(ingredient.ingredient.magnesium, float):
-                total_magnesium  = total_magnesium + ingredient.quantity * (ingredient.ingredient.magnesium/100)
+                total_magnesium  = total_magnesium + ingredient.quantity * (ingredient.ingredient.magnesium)
 
 
 
             if isinstance(ingredient.ingredient.manganese, float):
-                total_manganese  = total_manganese + ingredient.quantity * (ingredient.ingredient.manganese/100)
+                total_manganese  = total_manganese + ingredient.quantity * (ingredient.ingredient.manganese)
 
             if isinstance(ingredient.ingredient.phosphore , float):
-                total_phosphore  = total_phosphore + ingredient.quantity * (ingredient.ingredient.phosphore/100)
+                total_phosphore  = total_phosphore + ingredient.quantity * (ingredient.ingredient.phosphore)
 
             if isinstance(ingredient.ingredient.potassium, float):
-                total_potassium  = total_potassium + ingredient.quantity * (ingredient.ingredient.potassium/100)
+                total_potassium  = total_potassium + ingredient.quantity * (ingredient.ingredient.potassium)
 
             if isinstance(ingredient.ingredient.selenium , float):
-                total_selenium  = total_selenium + ingredient.quantity * (ingredient.ingredient.selenium/100)
+                total_selenium  = total_selenium + ingredient.quantity * (ingredient.ingredient.selenium)
 
             if isinstance(ingredient.ingredient.zinc , float):
-                total_zinc  = total_zinc + ingredient.quantity * (ingredient.ingredient.zinc/100)
+                total_zinc  = total_zinc + ingredient.quantity * (ingredient.ingredient.zinc)
 
             if isinstance(ingredient.ingredient.retinol, float):
-                total_retinol  = total_retinol + ingredient.quantity * (ingredient.ingredient.retinol/100)
+                total_retinol  = total_retinol + ingredient.quantity * (ingredient.ingredient.retinol)
 
             if isinstance(ingredient.ingredient.betaCarotene , float):
-                total_betacarotene  = total_betacarotene + ingredient.quantity * (ingredient.ingredient.betaCarotene/100)
+                total_betacarotene  = total_betacarotene + ingredient.quantity * (ingredient.ingredient.betaCarotene)
 
             if isinstance(ingredient.ingredient.vitamineD , float):
-                total_vitamineD  = total_vitamineD + ingredient.quantity * (ingredient.ingredient.vitamineD/100)
+                total_vitamineD  = total_vitamineD + ingredient.quantity * (ingredient.ingredient.vitamineD)
 
             if isinstance(ingredient.ingredient.vitamineE, float):
-                total_vitamineE  = total_vitamineE + ingredient.quantity * (ingredient.ingredient.vitamineE/100)
+                total_vitamineE  = total_vitamineE + ingredient.quantity * (ingredient.ingredient.vitamineE)
             if isinstance(ingredient.ingredient.VitamineK1 , float):
-                total_VitamineK1  = total_VitamineK1 + ingredient.quantity * (ingredient.ingredient.VitamineK1/100)
+                total_VitamineK1  = total_VitamineK1 + ingredient.quantity * (ingredient.ingredient.VitamineK1)
 
             if isinstance(ingredient.ingredient.vitamineK2 , float):
-                total_vitamineK2  = total_vitamineK2 + ingredient.quantity * (ingredient.ingredient.vitamineK2/100)
+                total_vitamineK2  = total_vitamineK2 + ingredient.quantity * (ingredient.ingredient.vitamineK2)
 
             if isinstance(ingredient.ingredient.vitamineB1, float):
-                total_vitamineB1  = total_vitamineB1 + ingredient.quantity * (ingredient.ingredient.vitamineB1/100)
+                total_vitamineB1  = total_vitamineB1 + ingredient.quantity * (ingredient.ingredient.vitamineB1)
 
             
             if isinstance(ingredient.ingredient.vitamineB2, float):
-                total_vitamineB2  = total_vitamineB2 + ingredient.quantity * (ingredient.ingredient.vitamineB2/100)
+                total_vitamineB2  = total_vitamineB2 + ingredient.quantity * (ingredient.ingredient.vitamineB2)
 
 #####vitamineB2
 
             if isinstance(ingredient.ingredient.VitamineB3 , float):
-                total_vitamineB3  = total_vitamineB3 + ingredient.quantity * (ingredient.ingredient.VitamineB3/100)
+                total_vitamineB3  = total_vitamineB3 + ingredient.quantity * (ingredient.ingredient.VitamineB3)
 
             if isinstance(ingredient.ingredient.vitamineB5 , float):
-                total_VitamineB5  = total_VitamineB5 + ingredient.quantity * (ingredient.ingredient.vitamineB5/100)
+                total_VitamineB5  = total_VitamineB5 + ingredient.quantity * (ingredient.ingredient.vitamineB5)
 
             if isinstance(ingredient.ingredient.vitamineB9, float):
-                total_vitamineB6  = total_vitamineB6 + ingredient.quantity * (ingredient.ingredient.vitamineB6/100)
+                total_vitamineB6  = total_vitamineB6 + ingredient.quantity * (ingredient.ingredient.vitamineB6)
             if isinstance(ingredient.ingredient.glucide , float):
-                total_VitamineB9  = total_VitamineB9 + ingredient.quantity * (ingredient.ingredient.vitamineB9/100)
+                total_VitamineB9  = total_VitamineB9 + ingredient.quantity * (ingredient.ingredient.vitamineB9)
 #Changing V to V
             if isinstance(ingredient.ingredient.VitamineB12 , float):
-                total_vitamineB12  = total_vitamineB12 + ingredient.quantity * (ingredient.ingredient.VitamineB12/100)
+                total_vitamineB12  = total_vitamineB12 + ingredient.quantity * (ingredient.ingredient.VitamineB12)
 
                 
             if isinstance(ingredient.quantity, float):
@@ -1442,6 +1534,7 @@ class RecipeDetailView(DetailView):
 
         return {"total_calorique" : total_calorique / quantite_total, "total_calorique_kcal" : total_calorique_kcal/quantite_total,
                 "total_glucide" : total_glucide / quantite_total, "total_sodium" : total_sodium / quantite_total, 
+                "total_sel" : total_sel/quantite_total, 
                 "total_proteins" : total_proteins / quantite_total, "total_fibres" : total_fibres / quantite_total, 
                 "total_eau" : total_eau / quantite_total, "total_sodium" : total_sodium / quantite_total, 
                 "total_lipide" : total_lipide / quantite_total, "total_sucres" : total_sucres / quantite_total, 
@@ -1493,7 +1586,7 @@ class RecipeDetailView(DetailView):
 
                 "total_VitamineB12" : total_vitamineB12 / quantite_total,   "total_sels_ajoutes" : total_sels_ajoutes / quantite_total , 
                  
-                "total_sucres_ajoutes" : total_sucres_ajoutes / quantite_total, "total_graisses_ajoutes" : Total_graisses_ajoutes / quantite_total, "total_fruitslegumineuse" : Total_fruitslegumineuse / quantite_total ,
+                "total_sucres_ajoutes" : 100*total_sucres_ajoutes / quantite_total, "total_graisses_ajoutes" : 100 * Total_graisses_ajoutes / quantite_total, "total_fruitslegumineuse" : 100 * Total_fruitslegumineuse / quantite_total ,
                 "total_AG" : total_AGsatures + total_AGmonoinsature + total_AGpolyinsature , "total_AG_insatures" : total_AGmonoinsature + total_AGpolyinsature, "total_AG_trans" : 0, "Quantite_totale" : quantite_total}
 
 
@@ -1582,7 +1675,7 @@ class RecipeDetailView(DetailView):
 #
 ####################################################################################################################
     def allegation(self, total_cal, total_graisse, total_ag_saturee,
-     total_ag_trans, total_ag, total_sucres, total_sucres_ajoutes, total_sel, total_sel_ajoute, 
+     total_ag_trans, total_ag, total_sucres, total_sucres_ajoutes, total_sel, total_sodium, total_sel_ajoute, 
      total_fibre, total_protein, total_graisses_monoinsatures, total_graisses_polyinsatures,
      total_selenium,  total_magnesium, total_phosphore, total_calcium, total_cuivre, total_fer, 
      total_manganese, total_potassium, total_zinc, total_vitamineD, total_vitamineE,
@@ -1591,6 +1684,7 @@ class RecipeDetailView(DetailView):
         '''faire une allégation selon les valeurs des différents totaux'''
         allegations = []
         allegations_minerales = []
+        allegations_vitamine = []
 
         total_cal = 0.001
 
@@ -1618,22 +1712,25 @@ class RecipeDetailView(DetailView):
 
         elif total_sucres_ajoutes < 0.5 :
             allegations.append ('sans sucres')
+        
+        if total_sucres_ajoutes < 2 :
+            allegations.append ('Sans sucre ajouté')
 
         #à voir avec le client 
         #if total_sucres_ajoutes < 0.5 :
         #    allegations.append ({'sans sucres ajoutes' : total_sucres})    
         
-        if total_sel + total_sel_ajoute < 0.12 :
+        if total_sel + total_sodium < 0.12 :
             allegations.append ('pauvre en sel')   
 
-        elif total_sel + total_sel_ajoute < 0.04 :
+        elif total_sel + total_sodium < 0.04 :
             allegations.append ('tres pauvre en sel')    
         
-        elif total_sel + total_sel_ajoute< 0.005 :
+        elif total_sel + total_sodium < 0.005 :
             allegations.append ('sans sodium')   
 
-        #if total_sel + total_sel_ajoute< 0.005 :
-        #    allegations.append ({'sans sodium ajouté' : total_sel})  
+        if total_sel_ajoute < 0.005 :
+            allegations.append ('sans sodium ou sel ajouté')  
 
         #a voir avec le client
         if total_fibre > 3 :
@@ -1661,118 +1758,124 @@ class RecipeDetailView(DetailView):
         total_acide_gras = total_graisses_monoinsatures + total_graisses_polyinsatures + total_ag_saturee
 
         if total_acide_gras > 0 :
+            if total_graisse == 0:
+                total_graisse = 1
 
-            if (total_graisses_monoinsatures / total_acide_gras > 0.45 and total_graisses_monoinsatures * 37 > 0.2 * total_cal) : 
+            if (total_graisses_monoinsatures / total_graisse > 0.45 and total_graisses_monoinsatures * 9 > 0.2 * total_cal) : 
                 allegations.append ('riche en graisse monoinsaturees')
 
-            if (total_graisses_polyinsatures / total_acide_gras  > 0.45 and total_graisses_polyinsatures > 0.2 * total_cal) : 
+            if (total_graisses_polyinsatures / total_graisse  > 0.45 and total_graisses_polyinsatures * 9> 0.2 * total_cal) : 
                 allegations.append ('riche en graisse polyinsaturees')
 
-            if ( total_graisses_polyinsatures + total_graisses_monoinsatures / total_acide_gras ) > 0.7  : 
+            if ( total_graisses_polyinsatures + total_graisses_monoinsatures / total_graisse > 0.7  and total_graisses_polyinsatures + total_graisses_monoinsatures * 9 > 0.2 * total_cal) : 
                 allegations.append ('riche en graisse insaturees')
-
-
-
-
-
-
+#########################################################################################33
+#
+#       Minéraux
+#
+######################################################################################
         if total_selenium > 8.25 : 
-            allegations.append('source de selenium')
+            allegations_minerales.append('source de selenium')
         elif total_selenium > 16.5 : 
-            allegations.append('riche en selenium')
+            allegations_minerales.append('riche en selenium')
 
         if total_magnesium > 0.056 : 
-            allegations.append('source de magnesium')
+            allegations_minerales.append('source de magnesium')
         elif total_magnesium > 0.112 : 
-            allegations.append('riche en magnesium')
+            allegations_minerales.append('riche en magnesium')
 
         if total_phosphore > 0.105 : 
-            allegations.append('source de phosphore')
+            allegations_minerales.append('source de phosphore')
         elif total_phosphore > 0.210 : 
-            allegations.append('riche en phosphore')
+            allegations_minerales.append('riche en phosphore')
 
         if total_calcium > 120 : 
-            allegations.append('source de calcium')
+            allegations_minerales.append('source de calcium')
         elif total_calcium > 240 : 
-            allegations.append('riche en selenium')
+            allegations_minerales.append('riche en selenium')
 
         if total_cuivre > 0.15 : 
-            allegations.append('source de cuivre')
+            allegations_minerales.append('source de cuivre')
         elif total_cuivre > 0.30 : 
-            allegations.append('riche en cuivre')
+            allegations_minerales.append('riche en cuivre')
 
         if total_fer > 2.1 : 
-            allegations.append('source de fer')
+            allegations_minerales.append('source de fer')
         elif total_fer > 4.2 : 
-            allegations.append('riche en fer')
+            allegations_minerales.append('riche en fer')
 
         if total_manganese > 0.3 : 
-            allegations.append('source de manganese')
+            allegations_minerales.append('source de manganese')
         elif total_manganese > 0.6 : 
-            allegations.append('riche en manganese')
+            allegations_minerales.append('riche en manganese')
 
         if total_potassium > 300 : 
-            allegations.append('source de potassium')
+            allegations_minerales.append('source de potassium')
         elif total_potassium > 600 : 
-            allegations.append('riche en potassium')    
+            allegations_minerales.append('riche en potassium')    
 
         if total_zinc > 1.5 : 
-            allegations.append('source de zinc')
+            allegations_minerales.append('source de zinc')
         elif total_zinc > 3 : 
-            allegations.append(['riche en zinc'])
+            allegations_minerales.append('riche en zinc')
+
+#############################################################
+#
+#
+#####################################################################
 
         if total_vitamineD > 0.75 : 
-            allegations.append(['source de vitamine D'])
+            allegations_vitamine.append('source de vitamine D')
         elif total_vitamineD > 1.5 : 
-            allegations.append(['riche en vitamine D'])
+            allegations_vitamine.append('riche en vitamine D')
 
         if total_vitamineE > 1.8 : 
-            allegations.append(['source de vitamine E'])
+            allegations_vitamine.append('source de vitamine E')
         elif total_vitamineE > 1.8 : 
-            allegations.append(['riche en vitamine E'])
+            allegations_vitamine.append('riche en vitamine E')
             
         if total_vitamineK > 1.8 : 
-            allegations.append(['source de vitamine K'])
+            allegations_vitamine.append('source de vitamine K')
         elif total_vitamineK > 1.8 : 
-            allegations.append(['riche en vitamine K'])            
+            allegations_vitamine.append('riche en vitamine K')            
             
         if total_vitamineB1 > 0.165 : 
-            allegations.append(['source de vitamine B1'])
+            allegations_vitamine.append('source de vitamine B1')
         elif total_vitamineB1 > 0.33 : 
-            allegations.append(['riche en vitamine B1'])     
+            allegations_vitamine.append('riche en vitamine B1')     
 
         if total_vitamineB2 > 0.21 : 
-            allegations.append(['source de vitamine B2'])
+            allegations_vitamine.append('source de vitamine B2')
         elif total_vitamineB2 > 0.42 : 
-            allegations.append(['riche en vitamine B2'])     
+            allegations_vitamine.append('riche en vitamine B2')     
 
 
         if total_vitamineB3 > 2.4 : 
-            allegations.append(['source de vitamine B2'])
+            allegations_vitamine.append('source de vitamine B2')
         elif total_vitamineB3 > 4.2 : 
-            allegations.append(['riche en vitamine B2'])     
+            allegations_vitamine.append('riche en vitamine B2')     
 
         if total_vitamineB5 > 0.9 : 
-            allegations.append(['source de vitamine B5'])
+            allegations_vitamine.append('source de vitamine B5')
         elif total_vitamineB5 > 1.8 : 
-            allegations.append(['riche en vitamine B5'])     
+            allegations_vitamine.append('riche en vitamine B5')     
 
         if total_vitamineB6 > 0.21 : 
-            allegations.append(['source de vitamine B6'])
+            allegations_vitamine.append('source de vitamine B6')
         elif total_vitamineB6 > 0.42 : 
-            allegations.append(['riche en vitamine B6'])
+            allegations_vitamine.append('riche en vitamine B6')
 
         if total_vitamineB9 > 30 : 
-            allegations.append(['source de vitamine B9'])
+            allegations_vitamine.append('source de vitamine B9')
         elif total_vitamineB9 > 60 : 
-            allegations.append(['riche en vitamine B9'])
+            allegations_vitamine.append('riche en vitamine B9')
 
         if total_vitamineB12 > 0.375 : 
-            allegations.append(['source de vitamine B12'])
+            allegations_vitamine.append('source de vitamine B12')
         elif total_vitamineB12 > 0.75: 
-            allegations.append(['riche en vitamine B12'])
+            allegations_vitamine.append('riche en vitamine B12')
 
-        return allegations
+        return allegations, allegations_minerales, allegations_vitamine
 
 
 
@@ -1884,7 +1987,7 @@ class RecipeDetailView(DetailView):
     
 
         context['total_sels_ajoutes'] = totaux['total_sels_ajoutes']
-        context['total_sucres_ajoutes'] = round (totaux["total_sucres_ajoutes"], 3)
+        context['total_sucres_ajoutes'] = round (totaux["total_sucres_ajoutes"],10)
         context['Total_graisses_ajoutes'] = totaux['total_graisses_ajoutes']
         context['Total_fruitslegumineuse'] = round (totaux["total_fruitslegumineuse"], 3)
 
@@ -1917,8 +2020,8 @@ class RecipeDetailView(DetailView):
 
         context['nutriscore'] = self.nutriscoreLettre(nutriscore)
         context['couleur'] = nutriscore_couleur[context['nutriscore']]
-        context['allegation'] = self.allegation(totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
-                                totaux["total_sucres_ajoutes"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
+        context['allegation'],context['allegation_minerales'],context['allegation_vitamine'] = self.allegation(totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
+                                totaux["total_sucres_ajoutes"], totaux["total_sel"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
                                 totaux["total_selenium"], totaux["total_magnesium"], totaux["total_phosphore"], totaux["total_calcium"], totaux["total_cuivre"], totaux["total_fer"], totaux["total_manganese"], totaux["total_potassium"], totaux["total_zinc"], 
                                 totaux["total_vitamineD"], totaux["total_vitamineE"], totaux["total_vitamineK"], totaux["total_vitamineB1"],  totaux["total_vitamineB2"], totaux["total_vitamineB3"], totaux["total_VitamineB5"], totaux["total_vitamineB6"], totaux["total_VitamineB9"],
                                 totaux["total_VitamineB12"], totaux["total_AGepa"], totaux["total_AGdha"], totaux["total_AGalphalinolenique"] )
@@ -1955,11 +2058,43 @@ class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     
     
 ''' LES INGREDIENTS'''
-class IngredientListView(ListView):
-    model = models.Ingredient 
-    template_name = 'ingredients/ingredients.html'
-    context_object_name = 'ingredients_app'
-    paginate_by = 100
+#class IngredientListView(ListView):
+#    model = models.Ingredient 
+#    template_name = 'ingredients/ingredients.html'
+#    context_object_name = 'ingredients_app'
+#    paginate_by = 100
+
+def Ingredient_view(request):
+    if request.method == 'GET':
+        ingredients = models.Ingredient.objects.all().order_by('name')
+        ingredients_list = models.Ingredient.objects.all().order_by('name')
+        context = {'ingredients': ingredients, 'ingredients_list': ingredients_list}
+        return render(request, 'ingredients/ingredients.html', context)
+
+    if request.method == 'POST':
+        if request.POST.get("search_button"):
+            name_ingredient = request.POST['search']
+            #print(request.POST['search'])
+            ingredients_list = models.Ingredient.objects.all()
+            ingredients = models.Ingredient.objects.all().filter(name  = name_ingredient)
+            context = {"ingredients_list" : ingredients_list, "ingredients" : ingredients }
+
+
+        
+        if request.POST.get("submit_id"):
+            ingredients = models.Ingredient.objects.all().order_by('name')
+            pk = request.POST['id']
+            ingredient_instance = models.Ingredient.objects.get(id = pk)
+            ingredient_clone = ingredient_instance
+
+            ingredient_clone.id = None
+            ingredient_clone.pk = None
+            ingredient_clone.name = ingredient_instance.name + '_BIS' 
+            ingredient_clone.save()
+            context = {"ingredients_list" : ingredients, "ingredients" : ingredients }      
+           
+    
+        return render(request, 'ingredients/ingredients.html', context)
 
 
 class IngredientDetailView(DetailView):
@@ -1996,12 +2131,43 @@ class IngredientDeleteView(DeleteView):
     
     
 ''' Les familles'''
-class FamilleListView(ListView):
-    model = models.Famille 
-    template_name = 'familles/familles.html'
-    context_object_name = 'familles_app'
-    paginate_by = 100
+#class FamilleListView(ListView):
+#    model = models.Famille 
+#    template_name = 'familles/familles.html'
+#    context_object_name = 'familles_app'
+#    paginate_by = 100
 
+def Famille_view(request):
+    if request.method == 'GET':
+        familles = models.Famille.objects.all().order_by('name')
+        context = {'familles': familles, 'familles_list':familles}
+        return render(request, 'familles/familles.html', context)
+
+    if request.method == 'POST':
+        if request.POST.get("search_button"):
+            name_famille = request.POST['search']
+            #print(request.POST['search'])
+            familles = models.Famille.objects.all().filter(name  = name_famille)
+            context = {"familles_list" : familles, "familles" : familles }
+            return render(request, 'familles/familles.html', context)
+
+            
+    if request.POST.get("submit_id"):
+            familles = models.Famille.objects.all().order_by('name')
+            pk = request.POST['id']
+            famille_instance = models.Famille.objects.get(id = pk)
+            famille_clone = famille_instance
+
+            famille_clone.id = None
+            famille_clone.pk = None
+            famille_clone.name = famille_instance.name + '_BIS' 
+            famille_clone.save()
+
+            context = {"familles_list" : familles, "familles" : familles }      
+            return HttpResponseRedirect(reverse_lazy('familles-recipe'))
+
+
+    return render(request, 'familles/familles.html', context = context)
 
 class FamilleDetailView(DetailView):
     model = models.Famille

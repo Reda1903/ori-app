@@ -97,10 +97,10 @@
     
     -->
 
-    <table id = 'Tableau nutritionnel' style="width:100%" class="table" bgcolor="rgba(239, 127, 0, 0.774)">
+    <table id = 'Tableau nutritionnel' style="width:100%" class="table" bgcolor="rgba(255, 255, 255, 255)">
         <thead  bgcolor="white">
         <div bgcolor="white">
-            <caption> Tableau nutritionnel</caption>
+            <caption><h2>Tableau nutritionnel</h2></caption>
 
         </div>
 
@@ -388,12 +388,9 @@
         </tbody>
     </table>
 
-
-
-        <br>           
-        <br>            
-        <table class="table" style="width:100%" bgcolor="rgba(239, 127, 0, 0.774)">
-            <caption>Allegations</caption>
+        
+        <table class="table" style="width:100%" ">
+            <caption><h2>Allegations</h2></caption>
 
             <tbody>   
             {% with i=0 %}
@@ -411,11 +408,56 @@
             {% endwith %}
             </tbody>
         </table>
-        <br>           
-        <br>     
-            <table class="table" style="width:100%" bgcolor="rgba(239, 127, 0, 0.774)">
+
+        
+        <table class="table" style="width:100%" >
+            <caption><h2>Allegations pour les minéraux</h2></caption>
+
+            <tbody>   
+            {% with i=0 %}
+            {% for alleg in allegation_minerales %}    
+
+                <tr>
+                    <th scope="col">
+                        allegation {{forloop.counter}}
+                    </th>   
+
+                    <td> {{alleg}}</td>     
+                </tr>
+
+            {% endfor %}
+            {% endwith %}
+            </tbody>
+        </table>
+
+
+
+        <table class="table" style="width:100%" >
+            <caption><h2>Allegations vitamines</h2></caption>
+
+            <tbody>   
+            {% with i=0 %}
+            {% for alleg in allegation_vitamine %}    
+
+                <tr>
+                    <th scope="col">
+                        allegation {{forloop.counter}}
+                    </th>   
+
+                    <td> {{alleg}}</td>     
+                </tr>
+
+            {% endfor %}
+            {% endwith %}
+            </tbody>
+        </table>
+
+
+
+
+            <table class="table" style="width:100%">
                 <thead>            
-                    <caption>Recapitulatif ingredients </caption>
+                    <caption><h2>Recapitulatif ingredients</h2> </caption>
 
                     <tr>
                         <th scope="col"> Nom </th>
@@ -441,13 +483,10 @@
                 </tbody>
             </table>
 
-            <br>           
-            <br>     
-
                     
-            <table class="table" style="width:100%" bgcolor="rgba(239, 127, 0, 0.774)">
+            <table class="table" style="width:100%">
                 <thead>
-                    <caption> Recapitulatif du processus </caption>
+                    <caption> <h2>Recapitulatif du processus </h2></caption>
 
                 </thead>
 
@@ -466,9 +505,9 @@
             </table>
 
 
-            <table class="table" style="width:100%" bgcolor="rgba(239, 127, 0, 0.774)">
+            <table class="table" style="width:100%" >
                 <thead>
-                    <caption> Nutriscore </caption>
+                    <caption> <h2>Nutriscore</h2> </caption>
 
                 </thead>
 

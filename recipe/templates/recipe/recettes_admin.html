@@ -18,7 +18,7 @@
             <input class="btn-secondary" id="search_button" type="submit" name="search_button" value="Chercher" style="display: inline-block">
             <datalist id="recipe_list">
 
-            {% for recipe in recipes_data %}
+            {% for recipe in recipes_list %}
             <option value="{{recipe.title}}"> </option>
             {% endfor %}
             </datalist>    
