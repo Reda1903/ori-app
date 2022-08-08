@@ -966,7 +966,7 @@ def create_recipe2(request) :
 def create_process(request, pk) : 
     Formset_Params = {
     "process_recipe-TOTAL_FORMS" : '1',
-    "process_recipe-INITIAL_FORMS" : '1',
+    "process_recipe-INITIAL_FORMS" : '0',
     "process_recipe-MIN_NUM_FORMS" : '1', 
     }    
     if request.method ==  "GET":
@@ -974,7 +974,7 @@ def create_process(request, pk) :
         recipe_instance = models.Recipe.objects.get(id=pk)
         mainform = RecipeForm( instance=recipe_instance)
 #        formset = ProcessFormSet(Formset_Params)
-        formset = ProcessFormSet()
+        formset = ProcessFormSet(Formset_Params)
 
         return render(request, 'recipe/process.html', {"form" : mainform, "formset" : formset, "pk":pk})
     

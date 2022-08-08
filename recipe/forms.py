@@ -69,7 +69,7 @@ class ProcessForm(forms.ModelForm):
         #self.fields['long_desc'].widget.attrs['style']  = 'width:800px; height:80px;'
 
 
-ProcessFormSet = forms.inlineformset_factory(Recipe, ProcessRecipe, form=ProcessForm)
+ProcessFormSet = forms.inlineformset_factory(Recipe, ProcessRecipe, form=ProcessForm, extra=0)
 Formset_Params = {
     'form-TOTAL_FORMS' : '100',
     'form-INITIAL_FORMS' : '1',
