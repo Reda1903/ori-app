@@ -2141,11 +2141,11 @@ class IngredientDeleteView(DeleteView):
     
     
 ''' Les familles'''
-#class FamilleListView(ListView):
-#    model = models.Famille 
-#    template_name = 'familles/familles.html'
-#    context_object_name = 'familles_app'
-#    paginate_by = 100
+class FamilleListView(ListView):
+    model = models.Famille 
+    template_name = 'familles/familles.html'
+    context_object_name = 'familles_app'
+    paginate_by = 100
 
 def Famille_view(request):
     if request.method == 'GET':
@@ -2189,7 +2189,7 @@ class FamilleCreateView(CreateView):
     fields = '__all__'
     
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        #form.instance.author = self.request.user
         return super().form_valid(form)
     
 class FamilleUpdateView(UpdateView):
