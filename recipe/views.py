@@ -2115,6 +2115,7 @@ class IngredientCreateView(CreateView):
     model = models.Ingredient
     template_name = 'ingredients/ingredient_form.html'
     fields = '__all__'
+    success_url = reverse_lazy('ingredients-recipe')
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -2124,6 +2125,7 @@ class IngredientUpdateView(UpdateView):
     model = models.Ingredient
     template_name = 'ingredients/ingredient_form.html'
     fields = '__all__'
+    success_url = reverse_lazy('ingredients-recipe')
 
     
 class IngredientDeleteView(DeleteView):
@@ -2187,15 +2189,20 @@ class FamilleCreateView(CreateView):
     model = models.Famille
     template_name = 'familles/famille_form.html'
     fields = '__all__'
+    success_url = reverse_lazy('familles-recipe')
     
-    def form_valid(self, form):
-        #form.instance.author = self.request.user
-        return super().form_valid(form)
+    #def form_valid(self, form):
+    #    form.instance.author = self.request.user
+    #    return super().form_valid(form)
     
+    #def get_success_url(self):
+    #    return redirect('familles-recipe')
+
 class FamilleUpdateView(UpdateView):
     model = models.Famille
     template_name = 'familles/famille_form.html'
     fields = '__all__'
+    success_url = reverse_lazy('familles-recipe')
 
     
 class FamilleDeleteView(DeleteView):
