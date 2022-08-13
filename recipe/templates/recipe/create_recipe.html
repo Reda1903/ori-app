@@ -39,72 +39,37 @@
 
     {% csrf_token %}
 
-    {{ form|crispy }}
+    {{ form|crispy }}        
 
-
-</br>
-
-    <div class="container" >
+    <br>
     
-        <div class="row">                
-            <div class = "col-sm-3">
-                Famille :
-            </div> 
-            <div class = "col-sm-3">
-                Ingrédient : 
-            </div> 
-            <div class = "col-sm-3">
-                Forme : 
-            </div> 
-            <div class = "col-sm-3">
-                Quantité (g) : 
-            </div> 
-            <div class = "col-sm-2">
-               
-            </div> 
-
-        </div> 
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
 
 
-    
-        {{ formset.management_form }}
-        {% for form in formset %}
-    
+            
 
-
-
-
-        <div class="row">
-            <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
-
-                <div class = "col-sm-3">
                     {{ form.famille}}
-                </div> 
-                <div class = "col-sm-3">
+
+
                     {{ form.forme}}
-                </div> 
-                <div class = "col-sm-3">
+
+
                     {{ form.ingredient}}
-                </div> 
-                <div class = "col-sm-3">
+
                     {{ form.quantity}}
-                </div> 
-                <div class = "col-sm-1">
+
                     {{form.DELETE}}
 
                     <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
-                </div> 
+        </div> 
 
-
-
-            </div> 
-</div> 
 
 
 <!--         {{ form.as_p }} -->
 
-        
-    </div>
+
     {% endfor %}
 <!--
     <div id="empty-form" class="">{{ formset.empty_form.famille}}</div>-->
@@ -147,17 +112,24 @@ addImageFormBtn.addEventListener("click", function (event) {
     //let formCount = imageForm.length ;
     const formCount = imageForm.length 
     //const formCount = parseInt(counterID.getAttribute('value')) + 1 ;
-    const newImageForm = imageForm[0].cloneNode(true);
+    var newImageForm = imageForm[0].cloneNode(true);
     //const newImageForm = document.getElementById('empty-form').cloneNode(true);
     const formRegex = RegExp(`ingredients_recipe-(\\d){1}-`, 'g');
 
     newImageForm.innerHTML = newImageForm.innerHTML.replace(formRegex, `ingredients_recipe-${formCount}-`);
+
+
     mainForm.insertBefore(newImageForm, submitFormBtn);
     totalForms.setAttribute('value', formCount + 1);
+    newImageForm.style.visibility = 'visible';
+    newImageForm.style.height="100%";
 
+    console.log(newImageForm.querySelectorAll('[id$="-DELETE"]')[0].checked)
+    console.log(imageForm[0].querySelectorAll('[id$="-DELETE"]')[0].checked)
+    //newImageForm.querySelectorAll('[id$="-DELETE"]')[0].checked = false;
     //counterID.setAttribute('value', formCount);
 
-    get_ingredients()
+    get_ingredients();
 });
 
 mainForm.addEventListener("click", function (event) {
@@ -242,7 +214,7 @@ mainForm.addEventListener("click", function (event) {
             //console.log(i)
         const formRegex1 = '#' + 'id_ingredients_recipe-'+ i + '-famille'
         const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-forme'
-        console.log(formRegex1)
+        //console.log(formRegex1)
         const id1 = $(formRegex1)
         const id2 = $(formRegex2)
         id1.click(function () {
@@ -279,7 +251,7 @@ mainForm.addEventListener("click", function (event) {
 
 
         for (let i = 0; i < 100; i++) {
-            console.log(i)
+            //console.log(i)
             const formRegex1 = '#' + 'id_ingredients_recipe-'+ i + '-forme'
             const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-ingredient'
             const id1 = $(formRegex1)
