@@ -43,18 +43,67 @@
 
 
 </br>
-    {{ formset.management_form }}
-    {% for form in formset %}
-    <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
-        {{ form.famille}}
-        {{ form.forme}}
-        {{ form.ingredient}}
-        {{ form.quantity}}
+
+    <div class="container" >
+    
+        <div class="row">                
+            <div class = "col-sm-3">
+                Famille :
+            </div> 
+            <div class = "col-sm-3">
+                Ingrédient : 
+            </div> 
+            <div class = "col-sm-3">
+                Forme : 
+            </div> 
+            <div class = "col-sm-3">
+                Quantité (g) : 
+            </div> 
+            <div class = "col-sm-2">
+               
+            </div> 
+
+        </div> 
+
+
+    
+        {{ formset.management_form }}
+        {% for form in formset %}
+    
+
+
+
+
+        <div class="row">
+            <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
+
+                <div class = "col-sm-3">
+                    {{ form.famille}}
+                </div> 
+                <div class = "col-sm-3">
+                    {{ form.forme}}
+                </div> 
+                <div class = "col-sm-3">
+                    {{ form.ingredient}}
+                </div> 
+                <div class = "col-sm-3">
+                    {{ form.quantity}}
+                </div> 
+                <div class = "col-sm-1">
+                    {{form.DELETE}}
+
+                    <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
+                </div> 
+
+
+
+            </div> 
+</div> 
+
+
 <!--         {{ form.as_p }} -->
 
-        {{form.DELETE}}
-
-        <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
+        
     </div>
     {% endfor %}
 <!--

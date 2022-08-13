@@ -312,18 +312,25 @@
 
                         </thead>
                         <tbody>   
-                        {% with i=0 %}
+
                         {% for alleg in allegation %}    
                             <tr>
                                 <th scope="col">
                                     allegation {{forloop.counter}}
                                 </th>   
 
-                                <td> {{alleg}}</td>     
+                                <td> {{alleg}}</td> 
+                                {% for alleg_val in allegation_valeurs %}    
+                                {% if forloop.counter == forloop.parentloop.counter %}  
+                                <td> {{alleg_val}}</td>   
+                                {% endif %}
+                                {% endfor %}
+
+
                             </tr>
 
                         {% endfor %}
-                        {% endwith %}
+
                         </tbody>
                     </table>
 
@@ -339,18 +346,24 @@
 
                         </thead>
                         <tbody>   
-                        {% with i=0 %}
                         {% for alleg in allegation_minerales %}    
-                            <tr>
-                                <th scope="col">
-                                    allegation {{forloop.counter}}
-                                </th>   
+                        <tr>
+                            <th scope="col">
+                                allegation {{forloop.counter}}
+                            </th>   
 
-                                <td> {{alleg}}</td>     
-                            </tr>
+                            <td> {{alleg}}</td> 
+                            {% for alleg_val in allegation_minerales_valeurs %}    
+                            {% if forloop.counter == forloop.parentloop.counter %}  
+                            <td> {{alleg_val}}</td>   
+                            {% endif %}
+                            {% endfor %}
+
+
+                        </tr>
 
                         {% endfor %}
-                        {% endwith %}
+
                         </tbody>
                     </table>
 
@@ -365,18 +378,23 @@
 
                         </thead>
                         <tbody>   
-                        {% with i=0 %}
-                        {% for alleg in allegation_vitamine %}    
+                            {% for alleg in allegation_vitamine %}    
                             <tr>
                                 <th scope="col">
                                     allegation {{forloop.counter}}
                                 </th>   
-
-                                <td> {{alleg}}</td>     
+    
+                                <td> {{alleg}}</td> 
+                                {% for alleg_val in allegation_vitamine_valeurs %}    
+                                {% if forloop.counter == forloop.parentloop.counter %}  
+                                <td> {{alleg_val}}</td>   
+                                {% endif %}
+                                {% endfor %}
+    
+    
                             </tr>
-
-                        {% endfor %}
-                        {% endwith %}
+    
+                            {% endfor %}
                         </tbody>
                     </table>
 
@@ -393,6 +411,13 @@
                             <tr>
                                 <th scope="col"> Nom </th>
                                 <th scope="col"> Quantite </th>
+                                <th scope="col"> Valeur énergétique (KJ/100g) </th>
+                                <th scope="col"> Acide gras saturés (g/100g) </th>
+                                <th scope="col"> Sucres (g/100g) </th>
+                                <th scope="col"> Protéine (g/100g) </th>
+                                <th scope="col"> Fibres AOAC (g/100g) </th>
+                                <th scope="col"> fruits, légumineuses et matières grasses (%100g) </th>
+                                <th scope="col">  </th>
                                 <th scope="col"> % </th>
             
                             </tr>
@@ -404,11 +429,102 @@
                             <tr>
                                 <th scope="col"> {{ingredient}} </th>   
                                 <td> {{ingredient.quantity}} </td>     
+                                <td> {{ingredient.ingredient.energie_kJ}} </td>     
+                                <td> {{ingredient.ingredient.AGsatures}} </td>  
+                                <td> {{ingredient.ingredient.glucide}} </td>     
+                                <td> {{ingredient.ingredient.proteins}} </td>     
+                                <td> {{ingredient.ingredient.fibres}} </td>        
+                                <td> {% if ingredient.ingredient.famille.name == 'matières grasses' or ingredient.ingredient.famille.name == 'fruits, légumes, légumineuses et oléagineux' %}
+                                    ingredient.quantity
+                                    {% else %}
+                                    0
+                                    {% endif %}
+                                </td>     
+
                                 <td>
+                                    {% for perc in perc_ingredients %}
+                                    {% if forloop.counter == forloop.parentloop.counter %}  
+                                    <td> {{perc}}</td>   
+                                    {% endif %}
+                                    {% endfor %}
                                 </td>     
                             </tr>
 
                         {%endfor%}
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+
+                <div class = "col-sm">
+
+                    
+                    <table class="table table-striped table-secondary">
+                        <thead>
+
+                            <tr> <h2> Totaux et scores </h2> </tr>
+                            <tr>
+                                <th scope="col"> Valeur énergétique (KJ/100g) </th>
+                                <th scope="col"> pts_kj </th>
+                                <th scope="col"> Acide gras saturés (g/100g) </th>
+                                <th scope="col"> pts_ags </th>
+                                <th scope="col"> Sucres (g/100g) </th>
+                                <th scope="col"> pts_glus </th>
+                                <th scope="col"> Protéines (g/100g) </th>
+                                <th scope="col"> pts_prot </th>
+                                <th scope="col"> Fibres (g/100g) </th>
+                                <th scope="col"> pts_fibres </th>
+                                <th scope="col"> Fruits, légumineuses et matières grasses (%100g) </th>
+                                <th scope="col"> pts_fln </th>
+                                <th scope="col"> Sodium (mg/100g) </th>
+                                <th scope="col"> pts_na </th>
+                                <th scope="col"> score A </th>
+                                <th scope="col"> Nutriscore </th>
+
+
+            
+                            </tr>
+                
+                        </thead>
+                        <tbody>  
+                            
+                            <tr> 
+                                <td> {{total_calorie}} </td>     
+                                <td> {{Score_kj}} </td>     
+
+                                <td> {{total_AGsatures}} </td>  
+                                <td> {{score_AGsatures}} </td>
+
+                                <td> {{total_glucide}} </td>   
+                                <td> {{Score_glucide}} </td> 
+                                  
+                                <td> {{total_protein}} </td>   
+                                <td> {{score_protein}} </td>   
+
+                                <td> {{total_fibre}} </td>     
+                                <td> {{score_fibre}} </td>     
+
+                                <td> {{total_fln}} </td>     
+                                <td> {{score_fln}} </td>     
+
+                                <td> {{total_sodium}} </td>     
+                                <td> {{Score_sodium}} </td>     
+
+                                <td> {{score_A}} </td>     
+                                <td> 
+                                    <div style = 'background-color:{{couleur}}; padding:0%'> 
+                                        {{nutriscore}} 
+                                    </div>
+                                </td>     
+                                
+                                
+                                <td>
+                                </td>     
+                            </tr>
 
 
                         </tbody>
@@ -441,11 +557,15 @@
 
                 </div>
 
-                <div class = "col-sm">
+                <div class = "col-sm-2">
                 <table class="table table-striped table-secondary">                    
 
+
                     <div> <h2> Nutriscore  </h2> </div>
-                    <div> {{nutriscore}} {{couleur}}</div>
+                    <div style = 'background-color:{{couleur}}; padding:0%'> 
+
+                        {{nutriscore}} </div>
+
                 </table>
 
                 </div>

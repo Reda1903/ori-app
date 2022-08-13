@@ -28,7 +28,7 @@ urlpatterns = [
     path('familles/create', views.FamilleCreateView.as_view(), name="familles-create"),
     path('familles/<int:pk>/update', views.FamilleUpdateView.as_view(), name="familles-update"),
     path('familles/<int:pk>/delete', views.FamilleDeleteView.as_view(), name="familles-delete"),
-    
+    path('familles-ingredients/<int:pk>', views.Famille_ingredients, name="famille-ingredients"),
     
     path('ingredients/', views.ingredients, name="ingredients-recipe"),
     path('familles/', views.familles, name="familles-recipe"),

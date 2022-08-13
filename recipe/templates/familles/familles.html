@@ -35,6 +35,7 @@
                         <tr>
                             <th scope="col"> Ingrédient </th>
                             <th scope="col"> modifier </th>
+                            <th scope="col"> voir détails </th>
                             <th scope="col"> supprimer</th>
                             <th scope="col"> dupliquer</th>
 
@@ -49,6 +50,7 @@
                 <td> {{famille.name}} </td>     
 
                 <td> <a class="btn btn-outline-info" href="{% url 'familles-update' famille.id %}">Modifier</a></td>   
+                <td> <a class="btn btn-outline-info" href="{% url 'famille-ingredients' famille.id %}">voir details</a></td>   
                 <td> <a class="btn btn-outline-danger" href="{% url 'familles-delete' famille.id %}">Supprimer</a>  </td>
 
 

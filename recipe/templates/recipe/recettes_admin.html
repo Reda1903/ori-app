@@ -46,7 +46,7 @@
 
             {% for recipe in recipes%}
 
-            {% if recipe.author.is_staff %}             
+            {% if recipe.author == user %}             
             <tr>
                 <th scope="col"><a href={% url 'recettes-detail' recipe.pk%} class="card-link">{{recipe.title}}</a> </th>   
                 <td> <a class="btn" href="{% url 'recettes-update' recipe.id %}"> Modifer </a> </td>
