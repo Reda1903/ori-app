@@ -435,7 +435,7 @@
                                 <td> {{ingredient.ingredient.proteins}} </td>     
                                 <td> {{ingredient.ingredient.fibres}} </td>        
                                 <td> {% if ingredient.ingredient.famille.name == 'matières grasses' or ingredient.ingredient.famille.name == 'fruits, légumes, légumineuses et oléagineux' %}
-                                    ingredient.quantity
+                                    {{ingredient.quantity}}
                                     {% else %}
                                     0
                                     {% endif %}

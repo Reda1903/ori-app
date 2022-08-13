@@ -889,7 +889,7 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
     context['nutriscore'] = nutriscoreLettre(nutriscore)
     context['couleur'] = nutriscore_couleur[context['nutriscore']]
-    context['allegation'],context['allegation_minerales'],context['allegation_vitamine']= allegation(ingredients, totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
+    context['allegation'],context['allegation_minerales'],context['allegation_vitamine']= allegation(ingredients, totaux["total_calorique"], totaux["total_lipide"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
                                 totaux["total_sucres_ajoutes"], totaux["total_sel"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
                                 totaux["total_selenium"], totaux["total_magnesium"], totaux["total_phosphore"], totaux["total_calcium"], totaux["total_cuivre"], totaux["total_fer"], totaux["total_manganese"], totaux["total_potassium"], totaux["total_zinc"], 
                                 totaux["total_vitamineD"], totaux["total_vitamineE"], totaux["total_vitamineK"], totaux["total_vitamineB1"],  totaux["total_vitamineB2"], totaux["total_vitamineB3"], totaux["total_VitamineB5"], totaux["total_vitamineB6"], totaux["total_VitamineB9"],
@@ -2095,7 +2095,7 @@ class RecipeDetailView(DetailView):
         perc = []
         if q_total > 0 :
             for i in range (len(ingredient_Recipe)) :
-                perc.append( ingredient_Recipe[i].quantity / q_total)
+                perc.append( ingredient_Recipe[i].quantity / q_total * 100) 
         
         else :
             perc = [0 for i in len(ingredient_Recipe)]        
