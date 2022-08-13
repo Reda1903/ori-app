@@ -194,7 +194,7 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
 
 
             if isinstance(ingredient.ingredient.energie_kJ, float):
-                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.total_proteins)
+                total_proteins  = total_proteins + ingredient.quantity * (ingredient.ingredient.proteins)
 
             if isinstance(ingredient.ingredient.fibres, float):
                 total_fibres  = total_fibres + ingredient.quantity * (ingredient.ingredient.fibres)
