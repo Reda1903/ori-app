@@ -841,6 +841,8 @@ def generatePdf(request, pk):        #récuperer l'ID de la recette
     context['total_selenium'] = round(totaux["total_zinc"],5)
     context['total_VitamineK1'] = round(totaux["total_VitamineK1"],2)
     context['total_vitamineK2'] = totaux["total_vitamineK2"]
+    context['total_vitamineE'] = totaux["total_vitamineE"]
+
     context['total_vitamineB1'] = totaux['total_vitamineB1']
     context['total_vitamineB2'] = round (totaux["total_vitamineB2"], 3)
     context['total_vitamineB3'] = round(totaux["total_vitamineB3"],5)
@@ -2175,6 +2177,8 @@ class RecipeDetailView(DetailView):
 
         context['total_VitamineK1'] = round(totaux["total_VitamineK1"],2)
         context['total_vitamineK2'] = totaux["total_vitamineK2"]
+
+        context['total_vitamineE'] = totaux["total_vitamineE"]
         context['total_vitamineB1'] = totaux['total_vitamineB1']
         context['total_vitamineB2'] = round (totaux["total_vitamineB2"], 3)
         context['total_vitamineB3'] = round(totaux["total_vitamineB3"],5)
