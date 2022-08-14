@@ -2260,16 +2260,37 @@ class RecipeDetailView(DetailView):
         context['total_calorie_kcal_bis'] = context['total_calorie_kcal'] / quantite_total * 12.5
         context['total_calorie_bis'] = context['total_calorie'] / quantite_total * 12.5 
 
+        context['total_calorie_kcal_gda'] = context['total_calorie_kcal_bis'] / 2000 *100
+        context['total_calorie_gda'] = context['total_calorie'] / 8400 * 100
+
+
+
         context['total_protein_bis'] = totaux['total_proteins'] / quantite_total * 12.5
+        context['total_protein_gda'] = context['total_protein_bis'] / 50 * 100
+
 
         context['total_glucide_bis'] = totaux['total_glucide'] / quantite_total * 12.5 
-        context['total_sucres_bis'] = totaux['total_sucres'] / quantite_total * 12.5 
+        context['total_sucres_bis'] = totaux['total_sucres'] / quantite_total * 12.5
+
+        context['total_glucide_gda'] =  context['total_glucide_bis'] / 260 * 100
+        context['total_sucres_gda'] =  context['total_sucres_bis'] / 90 * 100
+
+
+
 
         context['total_lipide_bis'] = totaux['total_lipide'] / quantite_total * 12.5
         context['total_AGsatures_bis'] = totaux['total_AGsatures'] / quantite_total * 12.5
 
+        context['total_lipide_gda'] = context['total_lipide_bis'] / 70 * 100
+        context['total_AGsatures_gda'] = context['total_AGsatures_bis'] / 20 * 100
+
+
+
         context['total_fibre_bis'] = totaux['total_fibres'] / quantite_total * 12.5
         context['total_sodium_bis'] = totaux["total_sodium"] / quantite_total * 12.5
+
+        context['total_fibre_gda'] = context['total_fibre_bis'] / 25 * 100
+        context['total_sodium_gda'] = context["total_sodium_bis"] / 2.4 * 100
 
 
 
