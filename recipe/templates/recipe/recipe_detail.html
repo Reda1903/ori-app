@@ -560,7 +560,20 @@
                         </thead>
                         <tbody>  
                             
+                            <tr>
+                                <th scope="col"> <h4> Préparation <h4/> </th>                                 
+                            </tr>
                         {% for step in process %}
+                            <tr>
+                                <th scope="col"> {{step.step}} </th>      
+                            </tr>
+
+                        {%endfor%}
+                            
+                        <tr>
+                            <th scope="col"> <h4> Cuisson <h4/> </th>                                 
+                        </tr>
+                        {% for step in cooking %}
                             <tr>
                                 <th scope="col"> {{step.step}} </th>      
                             </tr>

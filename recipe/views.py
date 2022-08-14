@@ -19,7 +19,8 @@ from datetime import datetime
 from .process import html_to_pdf 
 
 from . import models
-from .forms import ProcessFormSet, RecipeForm, IngredientForm, IngredientFormSet 
+from .forms import ProcessFormSet, RecipeForm, IngredientForm, IngredientFormSet, CookingForm, CookingFormSet
+
 #from my_project import recipe
 
 # Create your views here.
@@ -953,7 +954,8 @@ def create_recipe2(request) :
 
     elif request.method == "POST" :
         if 'terminerBttn' in request.POST:
-            print(print(request.POST.get('title')))
+            print(request.POST.get('title'))
+            print(request.POST)
             form = RecipeForm(request.POST)
             formset = IngredientFormSet(request.POST)
             form.instance.author = request.user
@@ -977,27 +979,39 @@ def create_process(request, pk) :
     "process_recipe-INITIAL_FORMS" : '0',
     "process_recipe-MIN_NUM_FORMS" : '1', 
     }    
+    Formset_Params2 = {
+    "cooking_recipe-TOTAL_FORMS" : '1',
+    "cooking_recipe-INITIAL_FORMS" : '0',
+    "pcooking_recipe-MIN_NUM_FORMS" : '1', 
+    }    
+
     if request.method ==  "GET":
         print(" GET ")
         recipe_instance = models.Recipe.objects.get(id=pk)
         mainform = RecipeForm( instance=recipe_instance)
 #        formset = ProcessFormSet(Formset_Params)
         formset = ProcessFormSet(Formset_Params)
+        formset2 = CookingFormSet(Formset_Params2)
 
-        return render(request, 'recipe/process.html', {"form" : mainform, "formset" : formset, "pk":pk})
+        return render(request, 'recipe/process.html', {"form" : mainform, "formset" : formset, "formset2" : formset2, "pk":pk})
     
     elif request.method == "POST" :
         print(" POST ")
         form = RecipeForm(request.POST)
         #if form.is_valid():
-        print(print(request.POST.get('title')))
+        print(request.POST)
         print(" form is valid ")
         recipe_instance = models.Recipe.objects.get(id=pk)
         formset = ProcessFormSet(request.POST, instance=recipe_instance)
+        formset2 = CookingFormSet(request.POST, instance=recipe_instance)
             
         if formset.is_valid():
             print(" form of formset is valid ")
             formset.save()
+            
+        if formset2.is_valid():
+            print(" form of formset is valid ")
+            formset2.save()
         #else :
             #print(" Form is invalid") 
                 
@@ -1066,12 +1080,12 @@ def update_process(request, pk) :
     }    
     recipe_instance = models.Recipe.objects.get(id=pk)
     if request.method ==  "GET":
-        print(" GET ")
 
         mainform = RecipeForm(instance=recipe_instance)
         formset = ProcessFormSet(instance=recipe_instance)
-        print(formset)
-        return render(request, 'recipe/update_process.html', {"form" : mainform, "formset" : formset, "pk":pk})
+        formset2 = CookingFormSet(instance=recipe_instance)
+ 
+        return render(request, 'recipe/update_process.html', {"form" : mainform, "formset" : formset, "formset2" : formset2, "pk":pk})
     
     elif request.method == "POST" :
         print(request)
@@ -1082,15 +1096,16 @@ def update_process(request, pk) :
         #    print(" form is valid ")
         formset = ProcessFormSet(request.POST, instance=recipe_instance)
 
+        formset2 = CookingFormSet(request.POST, instance=recipe_instance)
+
         recipe_instance.updated = datetime.now()
         recipe_instance.save(update_fields=['updated'])
         #formset = ProcessFormSet(request.POST)
             
         #if formset.is_valid():
-        print(" form of formset is valid ")
+
         formset.save()
-        print(formset)
-           
+        formset2.save()
         #else :
         #    print(" Form is invalid") 
                 
@@ -1124,7 +1139,6 @@ def admin_recipe(request) :
 
             recipe_instance = models.Recipe.objects.get(id = pk)
             ingredients_instance = models.IngredientRecipe.objects.filter(recipe = recipe_instance)
-            print(ingredients_instance)
             for ingredient in ingredients_instance :
                         ingredient_clone = ingredient
                         ingredient_clone.id = None
@@ -1135,7 +1149,17 @@ def admin_recipe(request) :
 
             recipe_instance = models.Recipe.objects.get(id = pk)
             ingredients_instance = models.ProcessRecipe.objects.filter(recipe = recipe_instance)
-            print(ingredients_instance)
+            for etape_prep in ingredients_instance :
+                        etape_clone = etape_prep
+                        etape_clone.id = None
+                        etape_clone.pk = None
+                        etape_clone.recipe = recipe_clone 
+                        etape_clone.save()    
+                        print(etape_clone)        
+
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.CookingRecipe.objects.filter(recipe = recipe_instance)
             for etape_prep in ingredients_instance :
                         etape_clone = etape_prep
                         etape_clone.id = None
@@ -1196,6 +1220,18 @@ def recipes_view(request):
             recipe_instance = models.Recipe.objects.get(id = pk)
             ingredients_instance = models.ProcessRecipe.objects.filter(recipe = recipe_instance)
             print(ingredients_instance)
+            for etape_prep in ingredients_instance :
+                        etape_clone = etape_prep
+                        etape_clone.id = None
+                        etape_clone.pk = None
+                        etape_clone.recipe = recipe_clone 
+                        etape_clone.save()    
+                        print(etape_clone)        
+
+
+
+            recipe_instance = models.Recipe.objects.get(id = pk)
+            ingredients_instance = models.CookingRecipe.objects.filter(recipe = recipe_instance)
             for etape_prep in ingredients_instance :
                         etape_clone = etape_prep
                         etape_clone.id = None
@@ -2079,6 +2115,7 @@ class RecipeDetailView(DetailView):
         #Calculer score fln
         ingredient_Recipe = models.IngredientRecipe.objects.filter(recipe = self.object).order_by('-quantity')
         process_Recipe = models.ProcessRecipe.objects.filter(recipe = self.object)
+        cooking_Recipe = models.CookingRecipe.objects.filter(recipe = self.object)
 
 
         '''for i in range(len(ingredient_Recipe)) : 
@@ -2090,6 +2127,7 @@ class RecipeDetailView(DetailView):
 
         context['ingredients'] = ingredient_Recipe
         context['process'] = process_Recipe
+        context['cooking'] = cooking_Recipe
 
         totaux = self.total_calorie()
 

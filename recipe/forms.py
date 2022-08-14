@@ -1,5 +1,5 @@
 from django import forms
-from .models import Famille, Forme, Ingredient, IngredientRecipe, Recipe, ProcessRecipe
+from .models import Famille, Forme, Ingredient, IngredientRecipe, Recipe, ProcessRecipe, CookingRecipe
 
 class RecipeForm(forms.ModelForm):
     
@@ -68,8 +68,23 @@ class ProcessForm(forms.ModelForm):
         self.fields['step'].widget.attrs['style'] = 'width:80%; height:40px;'
         #self.fields['long_desc'].widget.attrs['style']  = 'width:800px; height:80px;'
 
+class CookingForm(forms.ModelForm):
+    step = forms.CharField(widget=forms.Textarea)
+    #short_desc = forms.CharField(widget=forms.Textarea)
+    class Meta:
+        model = CookingRecipe
+        exclude = ('recipe',)
+
+    def __init__(self, *args, **kwargs):
+        super(CookingForm, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['step'].widget.attrs['style'] = 'width:80%; height:40px;'
+        #self.fields['long_desc'].widget.attrs['style']  = 'width:800px; height:80px;'
+
 
 ProcessFormSet = forms.inlineformset_factory(Recipe, ProcessRecipe, form=ProcessForm, extra=0)
+CookingFormSet = forms.inlineformset_factory(Recipe, CookingRecipe, form=CookingForm, extra=0)
+
+
 Formset_Params = {
     'form-TOTAL_FORMS' : '100',
     'form-INITIAL_FORMS' : '1',

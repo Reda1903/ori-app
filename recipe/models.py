@@ -8,7 +8,7 @@ from django.urls import reverse
 
 # Create your models here.
 class Recipe(models.Model):
-    title = models.CharField(max_length=500, unique=True)
+    title = models.CharField(max_length=500)
     #description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, null=True)
@@ -157,6 +157,18 @@ class ProcessRecipe(models.Model):
     
     def __str__(self):  
         return self.recipe.title
+
+
+class CookingRecipe(models.Model): 
+    step = models.CharField(max_length=100)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="cooking_recipe")
+
+    #ingredient = models.CharField(max_length=100)
+    
+    
+    def __str__(self):  
+        return self.recipe.title
+
 
 class FamilleTest(models.Model):
     name = models.CharField(max_length=100)
