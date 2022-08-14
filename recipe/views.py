@@ -2246,6 +2246,42 @@ class RecipeDetailView(DetailView):
 
         context['Total_fln'] = totaux["total_graisses_ajoutes"] + totaux["total_fruitslegumineuse"]
 
+
+
+#######################################################################################################################################
+#
+# Nutrition Fact per biscuit
+#
+######################################################################################################################################
+
+
+        quantite_total = totaux['Quantite_totale']
+
+        context['total_calorie_kcal_bis'] = context['total_calorie_kcal'] / quantite_total * 12.5
+        context['total_calorie_bis'] = context['total_calorie'] / quantite_total * 12.5 
+
+        context['total_protein_bis'] = totaux['total_proteins'] / quantite_total * 12.5
+
+        context['total_glucide_bis'] = totaux['total_glucide'] / quantite_total * 12.5 
+        context['total_sucres_bis'] = totaux['total_sucres'] / quantite_total * 12.5 
+
+        context['total_lipide_bis'] = totaux['total_lipide'] / quantite_total * 12.5
+        context['total_AGsatures_bis'] = totaux['total_AGsatures'] / quantite_total * 12.5
+
+        context['total_fibre_bis'] = totaux['total_fibres'] / quantite_total * 12.5
+        context['total_sodium_bis'] = totaux["total_sodium"] / quantite_total * 12.5
+
+
+
+#######################################################################################################################################
+#
+# Nutrition Fact GDA
+#
+######################################################################################################################################
+
+
+
+
         score_kj = self.score_calorie_kj(totaux["total_calorique"])
         score_sodium = self.score_sodium(totaux["total_sodium"])
         score_glucide = self.score_glucide(totaux['total_sucres'])

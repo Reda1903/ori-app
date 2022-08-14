@@ -3,11 +3,138 @@
     {% block content %}
 
 
-        <h2> Détails de la recettes </h2>
+        <h2> Détails de la recette </h2>
 
 
         <div class="container">
             <div class="row">
+
+
+                <div class = "col-sm">
+
+                    
+                    <table class="table table-striped table-secondary">
+                        <thead>
+
+                            <tr> <h2> Nutrition FACTS </h2> </tr>
+                            <tr>
+                                <th scope="col"> Valeur nutritionnelle </th>
+                                <th scope="col"> 100g </th>
+                                <th scope="col"> 1 Biscuit </th>
+                                <th scope="col"> % GDA ** / biscuit </th>
+
+
+
+            
+                            </tr>
+                
+                        </thead>
+                        <tbody>  
+                            
+                            <tr> 
+                                <td> Valeur énergétique </td>         
+
+                                <td> {{total_calorie_kcal}} kcal
+                                     {{total_calorie}} kJ
+                                </td> 
+
+                                <td> 
+                                    {{total_calorie_kcal_bis}} kcal
+                                    {{total_calorie_bis}} kJ
+                                </td>   
+                                  
+                                <td> GDA_energie </td>     
+                            </tr>
+                            
+                            <tr> 
+                                <td> Protéines </td>         
+
+                                <td> {{total_protein_bis}} g
+                                </td> 
+
+                                <td> {{total_protein}} g </td>   
+                                  
+                                <td> total_protein </td>     
+                            </tr>
+
+                            
+                            <tr> 
+                                <td> 
+                                    Glucides
+                                    dont sucres
+                                </td>         
+
+                                <td> 
+                                    {{total_glucide}} g
+                                    {{total_sucres}} g                                  
+                                </td> 
+
+                                <td> 
+                                    {{total_glucide_bis}} g
+                                    {{total_sucres_bis}} g                                  
+                                </td>   
+                                  
+                                <td> 
+                                    total_glucides
+                                    total_sucres  
+                                </td>     
+                            </tr>
+
+                            
+                            <tr> 
+                                <td> 
+                                    Lipides 
+                                    dont satués
+                                </td>         
+
+                                <td> 
+                                    {{total_lipide}} g
+                                    {{total_AGsatures}} g
+                                </td> 
+
+                                <td> 
+                                    {{total_lipide_bis}} g
+                                    {{total_AGsatures_bis}} g
+                                </td>   
+                                  
+                                <td> 
+                                    lipides
+                                    AGS 
+                                </td>     
+                            </tr>
+
+                                                        
+                            <tr> 
+                                <td> Fibres alimentaires </td>         
+
+                                <td> {{total_fibre}} g
+                                </td> 
+
+                                <td> {{total_fibre_bis}} g </td>   
+                                  
+                                <td> total_fibre </td>     
+                            </tr>
+                            
+                            <tr> 
+                                <td> Sodium </td>         
+
+                                <td> {{total_sodium}} g
+                                </td> 
+
+                                <td> {{total_sodium_bis}} g </td>   
+                                  
+                                <td> total_sodium </td>     
+                            </tr>
+
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+
 
                 <div class = "col-sm">
                     
