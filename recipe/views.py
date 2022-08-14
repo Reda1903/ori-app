@@ -1612,19 +1612,19 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 670:
             return 1 
-        if arrondi <= 1005 : 
+        elif arrondi <= 1005 : 
             return 2
         elif arrondi <= 1340 :
             return 3 
-        if arrondi <= 1675 : 
+        elif arrondi <= 1675 : 
             return 4
         elif arrondi <= 2010 :
             return 5 
-        if arrondi <= 2345 : 
+        elif arrondi <= 2345 : 
             return 6
         elif arrondi <= 2680 :
             return 7 
-        if arrondi <= 3015 : 
+        elif arrondi <= 3015 : 
             return 8
         elif arrondi <= 3350 :
             return 9
@@ -1639,19 +1639,19 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 180:
             return 1 
-        if arrondi <= 270 : 
+        elif arrondi <= 270 : 
             return 2
         elif arrondi <= 360 :
             return 3 
-        if arrondi <= 450 : 
+        elif arrondi <= 450 : 
             return 4
         elif arrondi <= 540 :
             return 5 
-        if arrondi <= 630 : 
+        elif arrondi <= 630 : 
             return 6
         elif arrondi <= 720 :
             return 7 
-        if arrondi <= 810 : 
+        elif arrondi <= 810 : 
             return 8
         elif arrondi <= 900 :
             return 9
@@ -1666,19 +1666,19 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 9:
             return 1 
-        if arrondi <= 13.5 : 
+        elif arrondi <= 13.5 : 
             return 2
         elif arrondi <= 18 :
             return 3 
-        if arrondi <= 22.5 : 
+        elif arrondi <= 22.5 : 
             return 4
         elif arrondi <= 27 :
             return 5 
-        if arrondi <= 31 : 
+        elif arrondi <= 31 : 
             return 6
         elif arrondi <= 36 :
             return 7 
-        if arrondi <= 40 : 
+        elif arrondi <= 40 : 
             return 8
         elif arrondi <= 45 :
             return 9
@@ -1693,19 +1693,19 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 2:
             return 1 
-        if arrondi <= 3 : 
+        elif arrondi <= 3 : 
             return 2
         elif arrondi <= 4 :
             return 3 
-        if arrondi <= 5 : 
+        elif arrondi <= 5 : 
             return 4
         elif arrondi <= 6 :
             return 5 
-        if arrondi <= 7 : 
+        elif arrondi <= 7 : 
             return 6
         elif arrondi <= 8 :
             return 7 
-        if arrondi <= 9 : 
+        elif arrondi <= 9 : 
             return 8
         elif arrondi <= 10 :
             return 9
@@ -1720,11 +1720,11 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 3.2:
             return 1 
-        if arrondi <= 4.8 : 
+        elif arrondi <= 4.8 : 
             return 2
         elif arrondi <= 6.4 :
             return 3 
-        if arrondi <= 8 : 
+        elif arrondi <= 8 : 
             return 4
         else :
             return 5
@@ -1736,11 +1736,11 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 1.9:
             return 1 
-        if arrondi <= 2.8 : 
+        elif arrondi <= 2.8 : 
             return 2
         elif arrondi <= 3.7 :
             return 3 
-        if arrondi <= 4.7 : 
+        elif arrondi <= 4.7 : 
             return 4
         else :
             return 5
@@ -1753,7 +1753,7 @@ class RecipeDetailView(DetailView):
             return 0
         elif arrondi <= 60:
             return 1 
-        if arrondi <= 80 : 
+        elif arrondi <= 80 : 
             return 2
         else :
             return 5
@@ -2204,6 +2204,9 @@ class RecipeDetailView(DetailView):
 
         #en kj 
         context['total_calorie'] = context['total_calorie_kcal']  * 4.18
+
+
+        context['Total_fln'] = totaux["total_graisses_ajoutes"] + totaux["total_fruitslegumineuse"]
 
         score_kj = self.score_calorie_kj(totaux["total_calorique"])
         score_sodium = self.score_sodium(totaux["total_sodium"])
