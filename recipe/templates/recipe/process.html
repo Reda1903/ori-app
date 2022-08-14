@@ -1,11 +1,16 @@
 {% extends 'recipe/base.html' %}
+
+{%block back%} 
+{%url 'recettes-update' pk %}
+{%endblock back%}
+
+
+
 {% block content%}
 {%load crispy_forms_tags%}
 
 
 <h3> Etapes de préparation :</h3>
-
-<td> <a href={% url 'recettes-update' pk%} class="card-link">retour</a> </td>
 
 <form id="pet_form"  action="{% url 'create_recipe_process' pk %}" method="post" enctype="multipart/form-data">
 

@@ -1,4 +1,10 @@
 {% extends 'recipe/base.html' %}
+
+{%block back%} 
+{%url 'update_recipe_process' pk  %}
+{%endblock back%}
+
+
 {% block content%}
 {%load crispy_forms_tags%}
 
