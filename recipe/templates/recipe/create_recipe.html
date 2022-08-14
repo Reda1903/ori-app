@@ -26,55 +26,39 @@
 
 -->
 
-<style>
-    .hidden {
-        display: none;
-    }
-</style>
 
 <h3> Ajouter les ingrédients :</h3>
-
 
 <form id="pet_form"  action="."  method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
 
-    {{ form|crispy }}        
+    {{ form|crispy }}
 
-    <br>
-    
+
+</br>
+</br>
+</br>
     {{ formset.management_form }}
     {% for form in formset %}
-        <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
+    <div class="image-form d-flex justify-content-between"  id="recipeForm" data-formes-url="{% url 'ajax_load_forme' %}"  data-ingredients-url="{% url 'ajax_load_ingredient' %}"  >
+        {{ form.famille}}
+        {{ form.forme}}
+        {{ form.ingredient}}
+        {{ form.quantity}}
 
 
-            
-
-                    {{ form.famille}}
-
-
-                    {{ form.forme}}
-
-
-                    {{ form.ingredient}}
-
-                    {{ form.quantity}}
-
-                    {{form.DELETE}}
-
-                    <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
-        </div> 
-
+        {{form.DELETE}}
 
 
 <!--         {{ form.as_p }} -->
-
+        <button class="align-self-center btn btn-danger delete-image-form">supprimer</button>
+    </div>    
 
     {% endfor %}
-<!--
-    <div id="empty-form" class="">{{ formset.empty_form.famille}}</div>-->
 
-    <input type="submit" class="btn btn-primary my-3"  value="Passer au processus de preparation" name='terminerBttn'/>  </button>
+
+    <input type="submit" value="Passer au processus de preparation" name='terminerBttn'/>  </button>
     <button id="add-image-form" class="btn btn-primary my-3">ajouter un nouvel ingrédient</button>
     <input type="hidden" name="counter_newid" value="3" id="id_counter_new_id">
 </form>
@@ -92,11 +76,7 @@ const addImageFormBtn = document.querySelector("#add-image-form");
 const submitFormBtn = document.querySelector('[type="submit"]');
 const totalForms = document.getElementById("id_ingredients_recipe-TOTAL_FORMS");
 
-
 const counterID = document.getElementById("id_counter_new_id");
-
-
-
 
 function updateForms() {
     let formCount = imageForm.length ;
@@ -110,24 +90,21 @@ function updateForms() {
 addImageFormBtn.addEventListener("click", function (event) {
     event.preventDefault();
     //let formCount = imageForm.length ;
-    const formCount = imageForm.length 
+    const formCount = imageForm.length
     //const formCount = parseInt(counterID.getAttribute('value')) + 1 ;
     var newImageForm = imageForm[0].cloneNode(true);
-    //const newImageForm = document.getElementById('empty-form').cloneNode(true);
     const formRegex = RegExp(`ingredients_recipe-(\\d){1}-`, 'g');
 
     newImageForm.innerHTML = newImageForm.innerHTML.replace(formRegex, `ingredients_recipe-${formCount}-`);
 
+        
+    newImageForm.style.visibility = 'visible';
+    newImageForm.style.height='100%';
 
     mainForm.insertBefore(newImageForm, submitFormBtn);
     totalForms.setAttribute('value', formCount + 1);
-    newImageForm.style.visibility = 'visible';
-    newImageForm.style.height="100%";
 
-    console.log(newImageForm.querySelectorAll('[id$="-DELETE"]')[0].checked)
-    console.log(imageForm[0].querySelectorAll('[id$="-DELETE"]')[0].checked)
-    //newImageForm.querySelectorAll('[id$="-DELETE"]')[0].checked = false;
-    //counterID.setAttribute('value', formCount);
+    //counterID.setAttribute('value', formCount + 1);
 
     get_ingredients();
 });
@@ -136,11 +113,7 @@ mainForm.addEventListener("click", function (event) {
     let formCount = imageForm.length ;
     if (event.target.classList.contains("delete-image-form")) {
         event.preventDefault();
-        //event.target.parentElement.remove();
-        //formCount--;
-        //updateForms();
-        //totalForms.setAttribute('value', 100);
-
+        const deleteRegex = RegExp(`id_ingredients_recipe-(\\d){1}-DELETE-`, 'g');
         event.target.parentElement.querySelectorAll('[id$="-DELETE"]')[0].checked = true;
         console.log(event.target.parentElement.querySelectorAll('[id$="-DELETE"]')[0].checked)
         //console.log(document.querySelectorAll('[id$="-DELETE"]'))
@@ -149,7 +122,10 @@ mainForm.addEventListener("click", function (event) {
         //event.target.parentElement.remove();
         event.target.parentElement.style.visibility = 'hidden';
         event.target.parentElement.style.height=0;
-
+        // show - use this for inline elements (span, a)
+        //formCount--;
+        //updateForms();
+        //totalForms.setAttribute('value', 5);
     }
 });
 </script>
@@ -208,16 +184,17 @@ mainForm.addEventListener("click", function (event) {
  
     //for (let i = 0; i < imageForm.length; i++) {
     const id_count = $("id_counter_new_id")
+    
     function get_ingredients() {
 
-        for (let i = 0; i < 100; i++) { 
+        for (let i = 0; i < 10; i++) { 
             //console.log(i)
         const formRegex1 = '#' + 'id_ingredients_recipe-'+ i + '-famille'
         const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-forme'
-        //console.log(formRegex1)
+        console.log(formRegex1)
         const id1 = $(formRegex1)
         const id2 = $(formRegex2)
-        id1.click(function () {
+        id1.change(function () {
             const url = $("#recipeForm").attr("data-formes-url");  // get the url of the `load_cities` view
             const familleId = $(this).val();  // get the selected country ID from the HTML input
 
@@ -250,13 +227,13 @@ mainForm.addEventListener("click", function (event) {
 
 
 
-        for (let i = 0; i < 100; i++) {
-            //console.log(i)
+        for (let i = 0; i < 10; i++) {
+            console.log(i)
             const formRegex1 = '#' + 'id_ingredients_recipe-'+ i + '-forme'
             const formRegex2 = '#' + 'id_ingredients_recipe-' + i + '-ingredient'
             const id1 = $(formRegex1)
             const id2 = $(formRegex2)
-            id1.click(function () {
+            id1.change(function () {
                 console.log("Test Change ingredient");
                 const url = $("#recipeForm").attr("data-ingredients-url");  // get the url of the `load_cities` view
                 const formeId = $(this).val();  // get the selected country ID from the HTML input

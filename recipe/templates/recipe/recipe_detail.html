@@ -425,8 +425,9 @@
                                 <th scope="col"> Acide gras saturés (g/100g) </th>
                                 <th scope="col"> Sucres (g/100g) </th>
                                 <th scope="col"> Protéines (g/100g) </th>
+                                <th scope="col"> Lipides (g/100g) </th>
                                 <th scope="col"> Fibres AOAC (g/100g) </th>
-                                <th scope="col"> fruits, légumineuses et matières grasses (%100g) </th>
+                                <th scope="col"> fruits, légumineuses et matières grasses en g  </th>
                                 <th scope="col">  </th>
                                 <th scope="col"> % </th>
             
@@ -443,6 +444,7 @@
                                 <td> {{ingredient.ingredient.AGsatures}} </td>  
                                 <td> {{ingredient.ingredient.glucide}} </td>     
                                 <td> {{ingredient.ingredient.proteins}} </td>     
+                                <td> {{ingredient.ingredient.lipide}} </td>     
                                 <td> {{ingredient.ingredient.fibres}} </td>        
                                 <td> {% if ingredient.ingredient.famille.name == 'matières grasses' or ingredient.ingredient.famille.name == 'fruits, légumes, légumineuses et oléagineux' %}
                                     {{ingredient.quantity}}

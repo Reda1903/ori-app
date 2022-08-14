@@ -5,6 +5,8 @@
 
 <h3> Etapes de préparation :</h3>
 
+<td> <a href={% url 'recettes-update' pk%} class="card-link">retour</a> </td>
+
 <form id="pet_form"  action="{% url 'create_recipe_process' pk %}" method="post" enctype="multipart/form-data">
 
     {% csrf_token %}

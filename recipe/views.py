@@ -964,10 +964,11 @@ def create_recipe2(request) :
                 
                 if formset.is_valid():
                     formset.save()
-            return redirect("create_recipe_process", pk)
+                return redirect("create_recipe_process", pk)
         
     else :
         return render(request, 'recipe/create_recipe.html', {"form" : form, "formset" : formset})
+
 
 
 def create_process(request, pk) : 
@@ -1229,7 +1230,7 @@ class RecipeDetailView(DetailView):
         '''
         Calculer les totaux des différents attributs des ingrédients présents dans la recette. Les stocker dans un dicionnaire
         '''
-        ingredients = models.IngredientRecipe.objects.filter(recipe = self.object)
+        ingredients = models.IngredientRecipe.objects.filter(recipe = self.object).order_by('-quantity')
         quantite_total = 0
 
         total_calorique = 0 
@@ -2076,7 +2077,7 @@ class RecipeDetailView(DetailView):
         #context['ingredients'] = models.IngredientRecipe.objects.all()
 
         #Calculer score fln
-        ingredient_Recipe = models.IngredientRecipe.objects.filter(recipe = self.object)
+        ingredient_Recipe = models.IngredientRecipe.objects.filter(recipe = self.object).order_by('-quantity')
         process_Recipe = models.ProcessRecipe.objects.filter(recipe = self.object)
 
 
@@ -2111,10 +2112,10 @@ class RecipeDetailView(DetailView):
 #
 ############################################################################################
 
-        context['total_calorie'] = totaux["total_calorique"]
+        
         context['quantite_totale'] = totaux["Quantite_totale"]
         context['inv_quantite_totale'] = 1/totaux["Quantite_totale"]
-        context['total_calorie_kcal'] = totaux["total_calorique_kcal"]
+
 
 
         context['total_glucide'] = round(totaux["total_glucide"],2)
@@ -2198,9 +2199,15 @@ class RecipeDetailView(DetailView):
         #context['total_fln'] = totaux['total_protein']
 
 
+        #en kcal
+        context['total_calorie_kcal'] = 4* totaux["total_glucide"] + 4* totaux['total_proteins'] + 9* totaux["total_lipide"]
+
+        #en kj 
+        context['total_calorie'] = context['total_calorie_kcal']  * 4.18
+
         score_kj = self.score_calorie_kj(totaux["total_calorique"])
         score_sodium = self.score_sodium(totaux["total_sodium"])
-        score_glucide = self.score_glucide(totaux["total_glucide"])
+        score_glucide = self.score_glucide(totaux['total_sucres'])
         score_agsatures = self.score_agsature(totaux["total_AGsatures"])
         score_protein = self.score_protein(totaux["total_proteins"])
         score_fibre = self.score_fibre(totaux["total_fibres"])

@@ -142,7 +142,7 @@ class IngredientRecipe(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="ingredients_recipe")
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, related_name="xyz", null=True)
     #ingredient = models.CharField(max_length=100)
-    quantity = models.FloatField()
+    quantity = models.FloatField(null=True)
     
     
     def __str__(self):  
