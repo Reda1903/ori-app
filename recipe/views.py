@@ -2480,10 +2480,36 @@ def Famille_view(request):
     return render(request, 'familles/familles.html', context = context)
 
 def Famille_ingredients(request, pk):
-    famille = models.Famille.objects.filter(id = pk)[0]
-    ingredients = models.Ingredient.objects.filter(famille = famille).order_by('name')
-    context = { 'famille' : famille, 'ingredients' : ingredients, 'ingredients_list' : ingredients}
-    return render (request, 'familles/famille_ingredient.html', context = context)
+    if request.method == 'GET':
+        famille = models.Famille.objects.filter(id = pk)[0]
+        ingredients = models.Ingredient.objects.filter(famille = famille).order_by('name')
+        context = { 'famille' : famille, 'ingredients' : ingredients, 'ingredients_list' : ingredients}
+        return render (request, 'familles/famille_ingredient.html', context = context)
+
+    if request.method == 'POST':
+        if request.POST.get("search_button"):
+            name_ingredient = request.POST['search']
+            #print(request.POST['search'])
+            ingredients_list = models.Ingredient.objects.all()
+            ingredients = models.Ingredient.objects.all().filter(name  = name_ingredient)
+            context = {"ingredients_list" : ingredients_list, "ingredients" : ingredients }
+
+
+        
+        if request.POST.get("submit_id"):
+            ingredients = models.Ingredient.objects.all().order_by('name')
+            pk = request.POST['id']
+            ingredient_instance = models.Ingredient.objects.get(id = pk)
+            ingredient_clone = ingredient_instance
+
+            ingredient_clone.id = None
+            ingredient_clone.pk = None
+            ingredient_clone.name = ingredient_instance.name + '_BIS' 
+            ingredient_clone.save()
+            context = {"ingredients_list" : ingredients, "ingredients" : ingredients }      
+           
+    
+        return render(request, 'ingredients/ingredients.html', context)
 
 class FamilleDetailView(DetailView):
     model = models.Famille
