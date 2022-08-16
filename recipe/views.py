@@ -1191,7 +1191,7 @@ def recipes_view(request):
     if request.method == 'GET':
         recipes = models.Recipe.objects.all()
         context = {"recipes" : recipes, "recipes_list" : recipes, }
-        return render(request, 'recipe/recettes_admin.html', context)
+        return render(request, 'recipe/recettes.html', context)
 
     if request.method == 'POST':
         if request.POST.get("submit_id"):
@@ -1243,7 +1243,7 @@ def recipes_view(request):
 
             recipes = models.Recipe.objects.all()
             context = {"recipes" : recipes, "recipes_list" : recipes }
-            return render(request, 'recipe/recettes_admin.html', context)
+            return render(request, 'recipe/recettes.html', context)
 
         if request.POST.get("search_button"):
             name_recipe = request.POST['search']
@@ -1253,7 +1253,7 @@ def recipes_view(request):
             recipes_list = models.Recipe.objects.all()
             recipes = models.Recipe.objects.all().filter(title  = name_recipe)
             context = {"recipes_list" : recipes, "recipes" : recipes }
-            return render(request, 'recipe/recettes_admin.html', context)
+            return render(request, 'recipe/recettes.html', context)
 
 
 class RecipeDetailView(DetailView):
