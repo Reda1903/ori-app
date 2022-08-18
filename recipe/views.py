@@ -2327,6 +2327,8 @@ class RecipeDetailView(DetailView):
         context['s'] = "rgba(95, 146, 48, 0.815)"
 
         context['nutriscore'] = self.nutriscoreLettre(nutriscore)
+
+        
         context['couleur'] = nutriscore_couleur[context['nutriscore']]
         context['allegation'],context['allegation_minerales'],context['allegation_vitamine'], context['allegation_valeurs'], context['allegation_minerales_valeurs'], context['allegation_vitamine_valeurs'] = self.allegation(totaux["total_calorique"], totaux["total_graisses_ajoutes"], totaux["total_AGsatures"], totaux["total_AG_trans"],  totaux["total_AG"], totaux["total_sucres"],
                                 totaux["total_sucres_ajoutes"], totaux["total_sel"], totaux["total_sodium"], totaux["total_sels_ajoutes"], totaux["total_fibres"], totaux["total_proteins"], totaux["total_AGmonoinsature"], totaux["total_AGpolyinsature"], 
